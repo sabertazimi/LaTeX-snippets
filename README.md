@@ -25,5 +25,3 @@ Licensed under the [MIT](LICENSE.md) License.
 
 * [Visual Studio Code's Latex Support](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop)
 * [Latex Tutorials](https://www.overleaf.com/learn/latex/Tutorials)
-
-**Enjoy!**
