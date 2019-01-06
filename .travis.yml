@@ -10,3 +10,4 @@ cache:
 script:
   - npm install -g vsce
   - npm install
+  - if [ -n "$TRAVIS_TAG" ]; then vsce package && vsce publish -p $VSCODE_TOKEN; fi
