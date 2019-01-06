@@ -2,6 +2,10 @@
 
 > Powerful LaTex Snippets for CS Paper Writing
 
+[![Build Status](https://travis-ci.org/sabertazimi/Latex-snippets.svg?branch=master)](https://travis-ci.org/sabertazimi/Latex-snippets)
+[![version](https://vsmarketplacebadge.apphb.com/version/sabertazimi.latex-snippets.svg)](https://marketplace.visualstudio.com/items?itemName=sabertazimi.latex-snippets)
+[![installs](https://vsmarketplacebadge.apphb.com/installs/sabertazimi.latex-snippets.svg)](https://marketplace.visualstudio.com/items?itemName=sabertazimi.latex-snippets)
+[![rating](https://vsmarketplacebadge.apphb.com/rating/sabertazimi.latex-snippets.svg)](https://marketplace.visualstudio.com/items?itemName=sabertazimi.latex-snippets)
 [![license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://raw.githubusercontent.com/sabertazimi/LaTex-snippets/master/LICENSE)
 
 This extension adds snippets for `LaTeX` language.
