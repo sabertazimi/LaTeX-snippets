@@ -1,28 +1,4 @@
 {
-  "Figure": {
-    "prefix": "figure",
-    "body": [
-      "\\begin{figure}",
-      "\\includegraphics[height=1in, width=1in]{$1}",
-      "\\Description{$2}",
-      "\\caption{$3}",
-      "\\end{figure}",
-      "$0"
-    ],
-    "description": "Add a figure"
-  },
-  "Figure:*": {
-    "prefix": "figure:*",
-    "body": [
-      "\\begin{figure*}",
-      "\\includegraphics[height=1in, width=1in]{$1}",
-      "\\Description{$2}",
-      "\\caption{$3}",
-      "\\end{figure*}",
-      "$0"
-    ],
-    "description": "Add a figure"
-  },
   "Align(ed)": {
     "prefix": "ali",
     "body": [
@@ -90,8 +66,8 @@
     ],
     "desciption": "Equation"
   },
-  "Ref:Figure": {
-    "prefix": "ref:figure",
+  "Figure:Ref": {
+    "prefix": "figure:ref",
     "body": [
       "${1:Figure}~\\ref{${2:fig:}}$0"
     ],
@@ -117,8 +93,8 @@
     ],
     "desciption": "Itemize"
   },
-  "Ref:Listing": {
-    "prefix": "ref:listing",
+  "Listing:Ref": {
+    "prefix": "listing:ref",
     "body": [
       "${1:Listing}~\\ref{${2:lst:}}$0"
     ],
@@ -174,8 +150,8 @@
     ],
     "description": "Folding Region End"
   },
-  "Ref:Section": {
-    "prefix": "ref:section",
+  "Section:Ref": {
+    "prefix": "section:ref",
     "body": [
       "${1:Section}~\\ref{${2:sec:}}$0"
     ],
@@ -220,8 +196,8 @@
     ],
     "desciption": "Sub Sub Section"
   },
-  "Ref:Table": {
-    "prefix": "ref:table",
+  "Table:Ref": {
+    "prefix": "table:ref",
     "body": [
       "${1:Table}~\\ref{${2:tab:}}$0"
     ],
@@ -244,5 +220,74 @@
       "\\\\end{${1:env}}"
     ],
     "desciption": "Begin - End"
+  },
+  "Figure:ACM": {
+    "prefix": "figure:acm",
+    "body": [
+      "\\begin{figure}",
+      "\t\\includegraphics[height=1in, width=1in]{$1}",
+      "\t\\Description{$2}",
+      "\t\\label{fig:$3}",
+      "\t\\caption{$4}",
+      "\\end{figure}",
+      "$0"
+    ],
+    "description": "Add a figure (ACM)"
+  },
+  "Figure:ACM:*": {
+    "prefix": "figure:acm:*",
+    "body": [
+      "\\begin{figure*}",
+      "\t\\includegraphics[height=1in, width=1in]{$1}",
+      "\t\\Description{$2}",
+      "\t\\label{fig:$3}",
+      "\t\\caption{$4}",
+      "\\end{figure*}",
+      "$0"
+    ],
+    "description": "Add a figure (ACM)"
+  },
+  "Table:ACM": {
+    "prefix": "table:acm",
+    "body": [
+      "\\begin{table}",
+      "\t\\caption{$1}",
+      "\t\\label{tab:$2}",
+      "\t\\begin{tabular}{${3:ccl}}",
+      "\t\t\\toprule",
+      "\t\t$0",
+      "\t\ta & b & c \\\\",
+      "\t\t\\midrule",
+      "\t\td & e & f \\\\",
+      "\t\t\\bottomrule",
+      "\t\\end{tabular}",
+      "\\end{table}"
+    ],
+    "description": "Add a table (ACM)"
+  },
+  "Table:ACM:*": {
+    "prefix": "table:acm:*",
+    "body": [
+      "\\begin{table*}",
+      "\t\\caption{$1}",
+      "\t\\label{tab:$2}",
+      "\t\\begin{tabular}{${3:ccl}}",
+      "\t\t\\toprule",
+      "\t\t$0",
+      "\t\ta & b & c \\\\",
+      "\t\t\\midrule",
+      "\t\td & e & f \\\\",
+      "\t\t\\bottomrule",
+      "\t\\end{tabular}",
+      "\\end{table*}"
+    ],
+    "description": "Add a table (ACM)"
+  },
+  "Cite": {
+    "prefix": "cite",
+    "body": [
+      "~\\cite{$0}"
+    ],
+    "description": "Add a cite"
   }
 }
