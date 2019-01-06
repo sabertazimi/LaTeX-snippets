@@ -1,0 +1,27 @@
+{
+    "name": "latex-snippets",
+    "displayName": "LaTex Snippets",
+    "publisher": "sabertazimi",
+    "license": "MIT",
+    "homepage": "https://github.com/sabertazimi/LaTex-snippets",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/sabertazimi/LaTex-snippets.git"
+    },
+    "description": "Powerful LaTex Snippets for CS Paper Writing",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.30.0"
+    },
+    "categories": [
+        "Snippets"
+    ],
+    "contributes": {
+        "snippets": [
+            {
+                "language": "latex",
+                "path": "./snippets/snippets.json"
+            }
+        ]
+    }
+}

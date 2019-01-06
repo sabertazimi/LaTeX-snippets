@@ -1,0 +1,5 @@
+out
+node_modules/*
+dev/unimathsymbols.txt
+VERSION
+.idea/
