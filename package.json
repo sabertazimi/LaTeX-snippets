@@ -1,18 +1,18 @@
 {
   "name": "latex-snippets",
-  "displayName": "LaTex Snippets",
+  "displayName": "LaTeX Snippets",
   "publisher": "sabertazimi",
   "license": "MIT",
-  "homepage": "https://github.com/sabertazimi/LaTex-snippets",
+  "homepage": "https://github.com/sabertazimi/LaTeX-snippets",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sabertazimi/LaTex-snippets.git"
+    "url": "https://github.com/sabertazimi/LaTeX-snippets.git"
   },
   "bugs": {
-	  "url": "https://github.com/sabertazimi/LaTex-snippets/issues"
-	},
+    "url": "https://github.com/sabertazimi/LaTeX-snippets/issues"
+  },
   "icon": "images/icon.png",
-  "description": "Powerful LaTex Snippets for CS Paper Writing",
+  "description": "Powerful LaTeX Snippets for CS Paper Writing",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.30.0"
@@ -21,10 +21,12 @@
     "Snippets"
   ],
   "contributes": {
-    "snippets": [{
-      "language": "latex",
-      "path": "./snippets/snippets.json"
-    }]
+    "snippets": [
+      {
+        "language": "latex",
+        "path": "./snippets/snippets.json"
+      }
+    ]
   },
   "scripts": {
     "publish": "vsce package && vsce publish"
