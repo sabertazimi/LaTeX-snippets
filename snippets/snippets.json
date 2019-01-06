@@ -286,7 +286,7 @@
   "Cite": {
     "prefix": "cite",
     "body": [
-      "~\\cite{$0}"
+      "~\\cite{$1}$0"
     ],
     "description": "Add a cite"
   }
