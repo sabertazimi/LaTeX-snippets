@@ -3,6 +3,20 @@
 All notable changes to the "latex-snippets" extension
 will be documented in this file.
 
+## [0.0.5] - 2019-01-15
+
+### Added
+
+- Figure snippet.
+- Table snippet.
+- Algorithm snippet.
+- Empty Page snippet.
+
+### Updated
+
+- move $0 to tail of Math snippet (ACM format).
+- move $0 to tail of Table snippet (ACM format).
+
 ## [0.0.4] - 2019-01-14
 
 ### Added

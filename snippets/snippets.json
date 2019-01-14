@@ -43,8 +43,9 @@
     "prefix": "math",
     "body": [
       "\\begin{math}",
-      "\t$0",
-      "\\end{math}"
+      "\t$1",
+      "\\end{math}",
+      "$0"
     ],
     "desciption": "Add a Math"
   },
@@ -52,8 +53,9 @@
     "prefix": "displaymath",
     "body": [
       "\\begin{displaymath}",
-      "\t$0",
-      "\\end{displaymath}"
+      "\t$1",
+      "\\end{displaymath}",
+      "$0"
     ],
     "desciption": "Display Math"
   },
@@ -61,8 +63,10 @@
     "prefix": "equation",
     "body": [
       "\\begin{equation}",
-      "\t$0",
-      "\\end{equation}"
+      "\t$2",
+      "\t\\label{eq:$1}",
+      "\\end{equation}",
+      "$0"
     ],
     "desciption": "Add a Equation"
   },
@@ -83,8 +87,9 @@
       "\t\\begin{displaymath}",
       "\t\t$2",
       "\t\\end{displaymath}",
-      "\t$0",
-      "\\end{theorem}"
+      "\t$3",
+      "\\end{theorem}",
+      "$0"
     ],
     "desciption": "Add a theorem"
   },
@@ -96,8 +101,9 @@
       "\t\\begin{displaymath}",
       "\t\t$2",
       "\t\\end{displaymath}",
-      "\t$0",
-      "\\end{definition}"
+      "\t$3",
+      "\\end{definition}",
+      "$0"
     ],
     "desciption": "Add a definition"
   },
@@ -109,10 +115,29 @@
       "\t\\begin{displaymath}",
       "\t\t$2",
       "\t\\end{displaymath}",
-      "\t$0",
-      "\\end{proof}"
+      "\t$3",
+      "\\end{proof}",
+      "$0"
     ],
     "desciption": "Add a proof"
+  },
+  "Algorithm": {
+    "prefix": "algo",
+    "body": [
+      "\\begin{algorithm}",
+      "\t\\floatname{algorithm}{${1:Algorithm}}",
+      "\t\\algrenewcommand\\algorithmicrequire{\\textbf{${2:Input: }}}",
+      "\t\\algrenewcommand\\algorithmicensure{\\textbf{${3:Output: }}}",
+      "\t\\caption{$4}",
+      "\t\\label{alg:$5}",
+      "\t\\begin{algorithmic}[1]",
+      "\t\t$6",
+      "\t\t\\State \\textbf{return} \\$state\\$",
+      "\t\\end{algorithmic}",
+      "\\end{algorithm}",
+      "$0"
+    ],
+    "desciption": "Add an algorithm"
   },
   "Figure:Ref": {
     "prefix": "figure:ref",
@@ -269,11 +294,27 @@
     ],
     "desciption": "Begin - End"
   },
+  "Figure": {
+    "prefix": "figure",
+    "body": [
+      "\\begin{figure}",
+      "\t\\begin{small}",
+      "\t\t\\begin{center}",
+      "\t\t\t\\includegraphics[height=1in, width=1in]{figures/$1}",
+      "\t\t\\end{center}",
+      "\t\t\\label{fig:$3}",
+      "\t\t\\caption{$4}",
+      "\t\\end{small",
+      "\\end{figure}",
+      "$0"
+    ],
+    "description": "Add a figure"
+  },
   "Figure:ACM": {
     "prefix": "figure:acm",
     "body": [
       "\\begin{figure}",
-      "\t\\includegraphics[height=1in, width=1in]{$1}",
+      "\t\\includegraphics[height=1in, width=1in]{figures/$1}",
       "\t\\Description{$2}",
       "\t\\label{fig:$3}",
       "\t\\caption{$4}",
@@ -286,7 +327,7 @@
     "prefix": "figure:acm:*",
     "body": [
       "\\begin{figure*}",
-      "\t\\includegraphics[height=1in, width=1in]{$1}",
+      "\t\\includegraphics[height=1in, width=1in]{figures/$1}",
       "\t\\Description{$2}",
       "\t\\label{fig:$3}",
       "\t\\caption{$4}",
@@ -294,6 +335,31 @@
       "$0"
     ],
     "description": "Add a figure (ACM)"
+  },
+  "Table": {
+    "prefix": "table",
+    "body": [
+      "\\begin{table}",
+      "\t\\begin{small}",
+      "\t\t\\caption{$1}",
+      "\t\t\\label{tab:$2}",
+      "\t\t\\begin{center}",
+      "\t\t\t\\begin{tabular}[c]{l|l}",
+      "\t\t\t\t\\hline",
+      "\t\t\t\t\\multicolumn{1}{c|}{\\textbf{$3}} & ",
+      "\t\t\t\t\\multicolumn{1}{c}{\\textbf{$4}} \\\\\\\\",
+      "\t\t\t\t\\hline",
+	    "\t\t\t\ta & b \\\\\\\\",
+	    "\t\t\t\tc & d \\\\\\\\",
+      "\t\t\t\t$5",
+      "\t\t\t\t\\hline",
+      "\t\t\t\\end{tabular}",
+      "\t\t\\end{center}",
+      "\t\\end{small}",
+      "\\end{table}",
+      "$0"
+    ],
+    "description": "Add a table"
   },
   "Table:ACM": {
     "prefix": "table:acm",
@@ -303,13 +369,14 @@
       "\t\\label{tab:$2}",
       "\t\\begin{tabular}{${3:ccl}}",
       "\t\t\\toprule",
-      "\t\t$0",
+      "\t\t$4",
       "\t\ta & b & c \\\\",
       "\t\t\\midrule",
       "\t\td & e & f \\\\",
       "\t\t\\bottomrule",
       "\t\\end{tabular}",
-      "\\end{table}"
+      "\\end{table}",
+      "$0"
     ],
     "description": "Add a table (ACM)"
   },
@@ -321,13 +388,14 @@
       "\t\\label{tab:$2}",
       "\t\\begin{tabular}{${3:ccl}}",
       "\t\t\\toprule",
-      "\t\t$0",
+      "\t\t$4",
       "\t\ta & b & c \\\\",
       "\t\t\\midrule",
       "\t\td & e & f \\\\",
       "\t\t\\bottomrule",
       "\t\\end{tabular}",
-      "\\end{table*}"
+      "\\end{table*}",
+      "$0"
     ],
     "description": "Add a table (ACM)"
   },
@@ -335,8 +403,9 @@
     "prefix": "enumerate",
     "body": [
       "\\begin{enumerate}",
-      "\t\\item $0",
-      "\\end{enumerate}"
+      "\t\\item $1",
+      "\\end{enumerate}",
+      "$0"
     ],
     "description": "Add a enumerate"
   },
@@ -346,5 +415,14 @@
       "~\\cite{$1}$0"
     ],
     "description": "Add a cite"
+  },
+  "EmptyPage": {
+    "prefix": "empty",
+    "body": [
+      "\\null\\thispagestyle{empty}",
+      "\\newpage",
+      "$0"
+    ],
+    "description": "Add a empty page"
   }
 }
