@@ -3,6 +3,18 @@
 All notable changes to the "latex-snippets" extension
 will be documented in this file.
 
+## [0.0.4] - 2019-01-14
+
+### Added
+
+- Equation (ACM format) snippet.
+- Math (ACM format) snippet.
+- Displaymath (ACM format) snippet.
+- Theorem (ACM format) snippet.
+- Definition (ACM format) snippet.
+- Proof (ACM format) snippet.
+- Enumerate (ACM format) snippet.
+
 ## [0.0.3] - 2019-01-06
 
 ### Added

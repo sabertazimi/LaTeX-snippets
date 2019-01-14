@@ -39,6 +39,33 @@
     ],
     "desciption": "Description"
   },
+  "Math": {
+    "prefix": "math",
+    "body": [
+      "\\begin{math}",
+      "\t$0",
+      "\\end{math}"
+    ],
+    "desciption": "Add a Math"
+  },
+  "DisplayMath": {
+    "prefix": "displaymath",
+    "body": [
+      "\\begin{displaymath}",
+      "\t$0",
+      "\\end{displaymath}"
+    ],
+    "desciption": "Display Math"
+  },
+  "Equation": {
+    "prefix": "equation",
+    "body": [
+      "\\begin{equation}",
+      "\t$0",
+      "\\end{equation}"
+    ],
+    "desciption": "Add a Equation"
+  },
   "Display Math — \\[ … \\]": {
     "prefix": "$$",
     "body": [
@@ -48,23 +75,44 @@
     ],
     "desciption": "Display Math"
   },
-  "Enumerate": {
-    "prefix": "enum",
+  "Theorem": {
+    "prefix": "theorem",
     "body": [
-      "\\\\begin{enumerate}",
-      "\t\\item $0",
-      "\\\\end{enumerate}"
-    ],
-    "desciption": "Enumerate"
-  },
-  "Equation": {
-    "prefix": "eq",
-    "body": [
-      "\\begin{equation}",
+      "\\begin{theorem}",
+      "\t$1",
+      "\t\\begin{displaymath}",
+      "\t\t$2",
+      "\t\\end{displaymath}",
       "\t$0",
-      "\\end{equation}"
+      "\\end{theorem}"
     ],
-    "desciption": "Equation"
+    "desciption": "Add a theorem"
+  },
+  "Definition": {
+    "prefix": "definition",
+    "body": [
+      "\\begin{definition}",
+      "\t$1",
+      "\t\\begin{displaymath}",
+      "\t\t$2",
+      "\t\\end{displaymath}",
+      "\t$0",
+      "\\end{definition}"
+    ],
+    "desciption": "Add a definition"
+  },
+  "Proof": {
+    "prefix": "proof",
+    "body": [
+      "\\begin{proof}",
+      "\t$1",
+      "\t\\begin{displaymath}",
+      "\t\t$2",
+      "\t\\end{displaymath}",
+      "\t$0",
+      "\\end{proof}"
+    ],
+    "desciption": "Add a proof"
   },
   "Figure:Ref": {
     "prefix": "figure:ref",
@@ -282,6 +330,15 @@
       "\\end{table*}"
     ],
     "description": "Add a table (ACM)"
+  },
+  "Enumerate": {
+    "prefix": "enumerate",
+    "body": [
+      "\\begin{enumerate}",
+      "\t\\item $0",
+      "\\end{enumerate}"
+    ],
+    "description": "Add a enumerate"
   },
   "Cite": {
     "prefix": "cite",
