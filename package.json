@@ -13,7 +13,7 @@
   },
   "icon": "images/icon.png",
   "description": "Powerful LaTeX Snippets for CS Paper Writing",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "engines": {
     "vscode": "^1.30.0"
   },
