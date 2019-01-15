@@ -3,16 +3,18 @@
 All notable changes to the "latex-snippets" extension
 will be documented in this file.
 
-## [0.0.6]
+## [0.0.6] - 2019-01-15
 
 ### Updated
-
-#### Algorithm Snippet
 
 - Added package usage comments.
 - Added Input/Ouput Control Sequence.
 
-## [0.0.5] - 2019-01-15
+### Fixed
+
+- Fixed Figure snippet (missing `}`).
+
+## [0.0.5] - 2019-01-14
 
 ### Added
 

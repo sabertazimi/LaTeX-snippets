@@ -231,7 +231,7 @@
     "body": [
       "${1:Section}~\\ref{${2:sec:}}$0"
     ],
-    "desciption": ""
+    "desciption": "Section Reference"
   },
   "Split": {
     "prefix": "spl",
@@ -277,7 +277,7 @@
     "body": [
       "${1:Table}~\\ref{${2:tab:}}$0"
     ],
-    "desciption": "Table"
+    "desciption": "Table Reference"
   },
   "Tabular": {
     "prefix": "tab",
@@ -307,7 +307,7 @@
       "\t\t\\end{center}",
       "\t\t\\label{fig:$3}",
       "\t\t\\caption{$4}",
-      "\t\\end{small",
+      "\t\\end{small}",
       "\\end{figure}",
       "$0"
     ],
