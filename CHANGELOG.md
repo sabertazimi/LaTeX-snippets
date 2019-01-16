@@ -3,6 +3,12 @@
 All notable changes to the "latex-snippets" extension
 will be documented in this file.
 
+## [0.0.7] - 2019-01-16
+
+### Updated
+
+- Change Figure snippet caption and width.
+
 ## [0.0.6] - 2019-01-15
 
 ### Updated
