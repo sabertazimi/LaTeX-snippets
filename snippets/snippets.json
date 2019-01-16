@@ -303,7 +303,7 @@
       "\\begin{figure}",
       "\t\\begin{small}",
       "\t\t\\begin{center}",
-      "\t\t\t\\includegraphics[width=\\textwidth]{figures/$1}",
+      "\t\t\t\\includegraphics[width=0.95\\textwidth]{figures/$1}",
       "\t\t\\end{center}",
       "\t\t\\caption{$3}",
       "\t\t\\label{fig:$4}",
@@ -317,7 +317,7 @@
     "prefix": "figure:acm",
     "body": [
       "\\begin{figure}",
-      "\t\\includegraphics[width=0.5\\textwidth]{figures/$1}",
+      "\t\\includegraphics[width=0.45\\textwidth]{figures/$1}",
       "\t\\caption{$2}",
       "\t\\label{fig:$3}",
       "\\end{figure}",
@@ -329,7 +329,7 @@
     "prefix": "figure:acm:*",
     "body": [
       "\\begin{figure*}",
-      "\t\\includegraphics[width=0.5\\textwidth]{figures/$1}",
+      "\t\\includegraphics[width=0.45\\textwidth]{figures/$1}",
       "\t\\caption{$2}",
       "\t\\label{fig:$3}",
       "\\end{figure*}",

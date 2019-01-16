@@ -3,6 +3,12 @@
 All notable changes to the "latex-snippets" extension
 will be documented in this file.
 
+## [0.0.8]
+
+### Updated
+
+- Change Figure snippet: figure width from '0.5' to '0.45' textwidth.
+
 ## [0.0.7] - 2019-01-16
 
 ### Updated
