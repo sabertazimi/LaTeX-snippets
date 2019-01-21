@@ -410,6 +410,16 @@
     ],
     "description": "Add a enumerate"
   },
+  "Compactitem": {
+    "prefix": "compactitem",
+    "body": [
+      "\\begin{compactitem}",
+      "\t\\item $1",
+      "\\end{compactitem}",
+      "$0"
+    ],
+    "description": "Add a compactitem (from package paralist)"
+  },
   "Cite": {
     "prefix": "cite",
     "body": [

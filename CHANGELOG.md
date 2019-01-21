@@ -5,6 +5,10 @@ will be documented in this file.
 
 ## [0.0.8]
 
+### Added
+
+- Add Compactitem snippet.
+
 ### Updated
 
 - Change Figure snippet: figure width from '0.5' to '0.45' textwidth.
