@@ -28,5 +28,6 @@ Licensed under the [MIT](LICENSE) License.
 
 ## For more information
 
-* [Visual Studio Code's LaTeX Support](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop)
-* [LaTeX Tutorials](https://www.overleaf.com/learn/latex/Tutorials)
+- [Visual Studio Code's LaTeX Support](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop)
+- [LaTeX Tutorials](https://www.overleaf.com/learn/latex/Tutorials)
+- [Snippets Generator](https://github.com/pawelgrzybek/snippet-generator)
