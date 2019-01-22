@@ -3,7 +3,13 @@
 All notable changes to the "latex-snippets" extension
 will be documented in this file.
 
-## [0.0.8]
+## [0.0.9]
+
+### Fixed
+
+- Rectify cutline symbol error in Table snippet.
+
+## [0.0.8] - 2019-01-21
 
 ### Added
 
