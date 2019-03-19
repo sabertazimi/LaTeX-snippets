@@ -3,7 +3,14 @@
 All notable changes to the "latex-snippets" extension
 will be documented in this file.
 
-## [0.0.9]
+## [0.0.9] - 2019-03-19
+
+### Added
+
+- `State` statement for algorithm
+- `If` statement for algorithm
+- `For` statement for algorithm
+- `While` statement for algorithm
 
 ### Fixed
 

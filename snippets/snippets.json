@@ -142,6 +142,41 @@
     ],
     "desciption": "Add an algorithm"
   },
+  "Algorithm:State": {
+    "prefix": "state",
+    "body": [
+      "\\State $1"
+    ],
+    "desciption": "Add an statement of algorithm"
+  },
+  "Algorithm:If": {
+    "prefix": "if",
+    "body": [
+      "\\If{$1}",
+      "\\ElsIf{$2}",
+      "\\Else",
+      "\\EndIf"
+    ],
+    "desciption": "Add an if statement of algorithm"
+  },
+  "Algorithm:For": {
+    "prefix": "for",
+    "body": [
+      "\\For{i=0:$1}",
+      "\t\\State $0",
+      "\\EndFor"
+    ],
+    "desciption": "Add an for statement of algorithm"
+  },
+  "Algorithm:While": {
+    "prefix": "while",
+    "body": [
+      "\\While{$1}",
+      "\t\\State $0",
+      "\\EndWhile"
+    ],
+    "desciption": "Add an for statement of algorithm"
+  },
   "Figure:Ref": {
     "prefix": "figure:ref",
     "body": [
