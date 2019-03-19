@@ -3,7 +3,7 @@
 All notable changes to the "latex-snippets" extension
 will be documented in this file.
 
-## [0.0.9] - 2019-03-19
+## [0.1.0] - 2019-03-19
 
 ### Added
 
