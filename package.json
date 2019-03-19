@@ -31,7 +31,7 @@
   "scripts": {
     "publish": "vsce package && vsce publish"
   },
-  "dependencies": {
+  "devDependencies": {
     "vsce": "^1.54.0"
   }
 }
