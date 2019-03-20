@@ -177,6 +177,13 @@
     ],
     "desciption": "Add an for statement of algorithm"
   },
+  "Algorithm:Ref": {
+    "prefix": "algo:ref",
+    "body": [
+      "${1:Algorithm}~\\ref{${2:algo:}}$0"
+    ],
+    "desciption": "Ref for Algorithm"
+  },
   "Figure:Ref": {
     "prefix": "figure:ref",
     "body": [
