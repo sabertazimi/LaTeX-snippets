@@ -4,6 +4,7 @@
 
 [![Build Status](https://travis-ci.org/sabertazimi/LaTeX-snippets.svg?branch=master)](https://travis-ci.org/sabertazimi/LaTeX-snippets)
 [![license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/sabertazimi/LaTeX-snippets/blob/master/LICENSE)
+[![Continuous Integration](https://github.com/sabertazimi/LaTeX-snippets/actions/workflows/ci.yml/badge.svg)](https://github.com/sabertazimi/LaTeX-snippets/actions/workflows/ci.yml)
 
 [![version](https://vsmarketplacebadge.apphb.com/version/sabertazimi.latex-snippets.svg)](https://marketplace.visualstudio.com/items?itemName=sabertazimi.latex-snippets)
 [![installs](https://vsmarketplacebadge.apphb.com/installs/sabertazimi.latex-snippets.svg)](https://marketplace.visualstudio.com/items?itemName=sabertazimi.latex-snippets)
