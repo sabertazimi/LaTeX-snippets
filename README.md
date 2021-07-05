@@ -2,7 +2,6 @@
 
 > Powerful LaTeX Snippets for CS Paper Writing
 
-[![Build Status](https://travis-ci.org/sabertazimi/LaTeX-snippets.svg?branch=master)](https://travis-ci.org/sabertazimi/LaTeX-snippets)
 [![license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/sabertazimi/LaTeX-snippets/blob/master/LICENSE)
 [![Continuous Integration](https://github.com/sabertazimi/LaTeX-snippets/actions/workflows/ci.yml/badge.svg)](https://github.com/sabertazimi/LaTeX-snippets/actions/workflows/ci.yml)
 
