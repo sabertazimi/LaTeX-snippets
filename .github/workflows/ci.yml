@@ -1,0 +1,41 @@
+name: Continuous Integration
+
+on:
+  release:
+    types:
+    - created
+
+jobs:
+  build:
+    name: Node ${{ matrix.node-version }} - ${{ matrix.architecture }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+        - ubuntu-latest
+        node-version:
+        - 14
+        architecture:
+        - x64
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+        fetch-depth: 1
+    - name: Setup Node environment
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        architecture: ${{ matrix.architecture }}
+        registry-url: https://registry.npmjs.org/
+        cache: 'npm'
+    - name: Installation
+      run: |
+          npm install -g vsce
+          npm ci
+    - name: Publish to VSCode marketplace
+      run: |
+          vsce package
+          vsce publish -p $VSCODE_TOKEN
