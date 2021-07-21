@@ -4,3 +4,4 @@ dev/unimathsymbols.txt
 VERSION
 .idea/
 *.vsix
+.vscode
