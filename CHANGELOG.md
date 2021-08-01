@@ -1,7 +1,16 @@
-# Change Log
+# Changelog
 
-All notable changes to the "latex-snippets" extension
-will be documented in this file.
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [1.0.0](https://github.com/sabertazimi/LaTeX-snippets/compare/v0.1.2...v1.0.0) (2021-08-01)
+
+
+### Bug Fixes
+
+* **CHANGELOG:** ship to conventional commits ([161c52f](https://github.com/sabertazimi/LaTeX-snippets/commit/161c52ff6067c3bcc7d8a814badf7f27724b39c8))
+* **CI:** rectify CI trigger timing ([01ace8a](https://github.com/sabertazimi/LaTeX-snippets/commit/01ace8a4b0396197bfa4946eeaa4fdf4950c01d5))
+* **release:** add standard-version support ([b300a16](https://github.com/sabertazimi/LaTeX-snippets/commit/b300a164b05f72878a08481b64a72b395208b61f))
+* **vsce:** rectify vsce publish token ([e98badb](https://github.com/sabertazimi/LaTeX-snippets/commit/e98badba4fbc02288d5997a8c457d46d88c898fb))
 
 ## [0.1.1] - 2019-03-20
 
