@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/sabertazimi/LaTeX-snippets/compare/v1.0.0...v1.0.1) (2021-08-01)
+
+
+### Bug Fixes
+
+* **CHANGELOG:** move patch version to h3 ([a410fbd](https://github.com/sabertazimi/LaTeX-snippets/commit/a410fbd60737cff45a4b1c04721e67a3158f4a2e))
+* **README:** rectify typo ([1fbb402](https://github.com/sabertazimi/LaTeX-snippets/commit/1fbb4023e03b949398972c9b7eb9bbc2b17161a0))
+
 ## [1.0.0](https://github.com/sabertazimi/LaTeX-snippets/compare/v0.1.2...v1.0.0) (2021-08-01)
 
 
