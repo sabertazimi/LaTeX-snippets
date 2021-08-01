@@ -5,67 +5,67 @@ will be documented in this file.
 
 ## [0.1.1] - 2019-03-20
 
-### Added
+### Features
 
 - Reference for algorithm
 
 ## [0.1.0] - 2019-03-19
 
-### Added
+### Features
 
 - `State` statement for algorithm
 - `If` statement for algorithm
 - `For` statement for algorithm
 - `While` statement for algorithm
 
-### Fixed
+### Bug Fixes
 
-- Rectify cutline symbol error in Table snippet.
+- Rectify cutlines symbol error in Table snippet.
 
 ## [0.0.8] - 2019-01-21
 
-### Added
+### Features
 
 - Add Compactitem snippet.
 
-### Updated
+### Bug Fixes 
 
 - Change Figure snippet: figure width from '0.5' to '0.45' textwidth.
 
 ## [0.0.7] - 2019-01-16
 
-### Updated
+### Bug Fixes
 
 - Change Figure snippet caption and width.
 
 ## [0.0.6] - 2019-01-15
 
-### Updated
+### Features
 
 - Added package usage comments.
-- Added Input/Ouput Control Sequence.
+- Added Input/Output Control Sequence.
 
-### Fixed
+### Bug Fixes
 
 - Fixed Figure snippet (missing `}`).
 
 ## [0.0.5] - 2019-01-14
 
-### Added
+### Features
 
 - Figure snippet.
 - Table snippet.
 - Algorithm snippet.
 - Empty Page snippet.
 
-### Updated
+### Bug Fixes
 
 - move $0 to tail of Math snippet (ACM format).
 - move $0 to tail of Table snippet (ACM format).
 
 ## [0.0.4] - 2019-01-14
 
-### Added
+### Features
 
 - Equation (ACM format) snippet.
 - Math (ACM format) snippet.
@@ -77,7 +77,7 @@ will be documented in this file.
 
 ## [0.0.3] - 2019-01-06
 
-### Added
+### Features
 
 - Figure (ACM format) snippet.
 - Table (ACM format) snippet.
@@ -85,13 +85,13 @@ will be documented in this file.
 
 ## [0.0.2] - 2019-01-06
 
-### Added
+### Features
 
 - Travis CI build and publish support.
 
 ## [0.0.1] - 2019-01-06
 
-### Added
+### Features
 
 - All snippets from [@ProAdd-ons](https://github.com/ProAdd-ons/vscode-LaTeX-support).
 
