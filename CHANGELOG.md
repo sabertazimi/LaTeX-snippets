@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file. See [standa
 * **release:** add standard-version support ([b300a16](https://github.com/sabertazimi/LaTeX-snippets/commit/b300a164b05f72878a08481b64a72b395208b61f))
 * **vsce:** rectify vsce publish token ([e98badb](https://github.com/sabertazimi/LaTeX-snippets/commit/e98badba4fbc02288d5997a8c457d46d88c898fb))
 
-## [0.1.1] - 2019-03-20
+### [0.1.1] - 2019-03-20
 
 ### Features
 
@@ -31,7 +31,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 - Rectify cutlines symbol error in Table snippet.
 
-## [0.0.8] - 2019-01-21
+### [0.0.8] - 2019-01-21
 
 ### Features
 
@@ -41,13 +41,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 - Change Figure snippet: figure width from '0.5' to '0.45' textwidth.
 
-## [0.0.7] - 2019-01-16
+### [0.0.7] - 2019-01-16
 
 ### Bug Fixes
 
 - Change Figure snippet caption and width.
 
-## [0.0.6] - 2019-01-15
+### [0.0.6] - 2019-01-15
 
 ### Features
 
@@ -58,7 +58,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 - Fixed Figure snippet (missing `}`).
 
-## [0.0.5] - 2019-01-14
+### [0.0.5] - 2019-01-14
 
 ### Features
 
@@ -72,7 +72,7 @@ All notable changes to this project will be documented in this file. See [standa
 - move $0 to tail of Math snippet (ACM format).
 - move $0 to tail of Table snippet (ACM format).
 
-## [0.0.4] - 2019-01-14
+### [0.0.4] - 2019-01-14
 
 ### Features
 
@@ -84,7 +84,7 @@ All notable changes to this project will be documented in this file. See [standa
 - Proof (ACM format) snippet.
 - Enumerate (ACM format) snippet.
 
-## [0.0.3] - 2019-01-06
+### [0.0.3] - 2019-01-06
 
 ### Features
 
@@ -92,7 +92,7 @@ All notable changes to this project will be documented in this file. See [standa
 - Table (ACM format) snippet.
 - Cite snippet.
 
-## [0.0.2] - 2019-01-06
+### [0.0.2] - 2019-01-06
 
 ### Features
 
