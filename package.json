@@ -30,8 +30,8 @@
   },
   "scripts": {
     "publish": "vsce package && vsce publish",
-    "prelease": "standard-version --dry-run",
-    "release": "standard-version"
+    "prelease": "standard-version --dry-run -s",
+    "release": "standard-version -s"
   },
   "devDependencies": {
     "standard-version": "^9.3.1",
