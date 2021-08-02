@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.3](https://github.com/sabertazimi/LaTeX-snippets/compare/v1.0.2...v1.0.3) (2021-08-02)
+
+
+### Building Work
+
+* **CHANGELOG:** add more fields to CHANGELOG ([de78fc9](https://github.com/sabertazimi/LaTeX-snippets/commit/de78fc9b5b0049c5657c59f675d04e1f98aec8e1))
+
 ### [1.0.2](https://github.com/sabertazimi/LaTeX-snippets/compare/v1.0.1...v1.0.2) (2021-08-02)
 
 
