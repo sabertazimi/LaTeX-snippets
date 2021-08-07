@@ -25,6 +25,9 @@ to know what has changed over the last few versions of this extension.
 Contributions are greatly appreciated.
 Please fork this repository and open a pull request to add snippets.
 
+You can use [Snippet Generator](https://snippet-generator.app)
+to generate snippet from LaTex source code.
+
 ## License
 
 Licensed under the [MIT](LICENSE) License.
