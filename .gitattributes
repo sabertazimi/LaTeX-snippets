@@ -1,3 +1,8 @@
+.env linguist-detectable=false
+*.env linguist-detectable=false
+config.js linguist-detectable=false
+*.config.js linguist-detectable=false
+jest.*.js linguist-detectable=false
+
 snippets/snippets.json linguist-detectable=true
 snippets/snippets.json linguist-documentation=false
-
