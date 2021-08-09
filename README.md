@@ -15,6 +15,54 @@
 This extension adds snippets for `LaTeX` language.
 Originally converted from the [ProAdd-ons/vscode-LaTeX-support](https://github.com/ProAdd-ons/vscode-LaTeX-support).
 
+## Snippets List
+
+- `Align(ed)`: Align(ed).
+- `Cases`: Cases.
+- `Chapter`: Chapter.
+- `Description`: Description.
+- `Math`: Add a Math.
+- `DisplayMath`: Display Math.
+- `Equation`: Add a Equation.
+- `Display Math — \\[ … \\]`: Display Math.
+- `Theorem`: Add a theorem.
+- `Definition`: Add a definition.
+- `Proof`: Add a proof.
+- `Algorithm`: Add an algorithm.
+- `Algorithm:State`: Add an statement of algorithm.
+- `Algorithm:If`: Add an if statement of algorithm.
+- `Algorithm:For`: Add an for statement of algorithm.
+- `Algorithm:While`: Add an for statement of algorithm.
+- `Algorithm:Ref`: Ref for Algorithm.
+- `Figure:Ref`: Ref for Figure.
+- `Gather(ed)`: Gather(ed).
+- `Itemize`: Itemize.
+- `Listing:Ref`: Listing.
+- `Matrix`: Matrix.
+- `Page`: Page.
+- `Paragraph`: Paragraph.
+- `Part`: Part.
+- `Region Start`: Folding Region Start.
+- `Region End`: Folding Region End.
+- `Section:Ref`: Section Reference.
+- `Split`: Section.
+- `Sub Paragraph`: Sub Paragraph.
+- `Sub Section`: Sub Section.
+- `Sub Sub Section`: Sub Sub Section.
+- `Table:Ref`: Table Reference.
+- `Tabular`: Tabular.
+- `\\begin{}…\\end{}`: Begin - End.
+- `Figure`: Add a figure.
+- `Figure:ACM`: Add a figure (ACM).
+- `Figure:ACM:*`: Add a figure (ACM).
+- `Table`: Add a table.
+- `Table:ACM`: Add a table (ACM).
+- `Table:ACM:*`: Add a table (ACM).
+- `Enumerate`: Add a enumerate.
+- `Compactitem`: Add a compactitem (from package `paralist`).
+- `Cite`: Add a cite.
+- `EmptyPage`: Add a empty page.
+
 ## Changelog
 
 Read the [CHANGELOG](CHANGELOG.md)
