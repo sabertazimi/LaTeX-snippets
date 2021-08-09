@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.5](https://github.com/sabertazimi/LaTeX-snippets/compare/v1.0.4...v1.0.5) (2021-08-09)
+
+
+### Building Work
+
+* **GitHub Linguist:** disable config files detection ([7e4d5f2](https://github.com/sabertazimi/LaTeX-snippets/commit/7e4d5f23fb3818a9277f658372fd266b6ae32a0f))
+
 ### [1.0.4](https://github.com/sabertazimi/LaTeX-snippets/compare/v1.0.3...v1.0.4) (2021-08-02)
 
 
