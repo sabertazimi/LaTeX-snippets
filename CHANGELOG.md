@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.6](https://github.com/sabertazimi/LaTeX-snippets/compare/v1.0.5...v1.0.6) (2021-08-12)
+
+
+### :rocket: Building Work
+
+* **CI:** auto close stale issues ([07bf511](https://github.com/sabertazimi/LaTeX-snippets/commit/07bf51150248c1ee03e4f62c9e1d3c5f7dc28b3a))
+
+
+### :bug: Bug Fixes
+
+* **code lines:** count `snippets.json` lines ([cb22ba7](https://github.com/sabertazimi/LaTeX-snippets/commit/cb22ba77511fcd1fc38f7ff38974ea56f78ec29a))
+
 ### [1.0.5](https://github.com/sabertazimi/LaTeX-snippets/compare/v1.0.4...v1.0.5) (2021-08-09)
 
 
