@@ -45,3 +45,6 @@ LICENSE
 Makefile
 robots.txt
 setup.sh
+
+!snippets/
+!snippets/snippets.json
