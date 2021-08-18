@@ -2,8 +2,13 @@ name: Continuous Integration
 
 on:
   push:
+    branches:
+      - main
     tags:
-    - '*'
+      - '*'
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -12,36 +17,37 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
+          - ubuntu-latest
         node-version:
-        - 16
+          - 16
         architecture:
-        - x64
+          - x64
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      with:
-        submodules: true
-        fetch-depth: 1
-    - name: Setup Node environment
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-        architecture: ${{ matrix.architecture }}
-        registry-url: https://registry.npmjs.org/
-        cache: 'npm'
-    - name: Installation
-      run: |
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 1
+      - name: Setup Node environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          architecture: ${{ matrix.architecture }}
+          registry-url: https://registry.npmjs.org/
+          cache: 'npm'
+      - name: Installation
+        run: |
           npm ci
-    - name: Building work
-      run: |
+      - name: Building work
+        run: |
           npm run lint --if-present
           npm run test --if-present
           npm run build --if-present
-    - name: Publish to VSCode marketplace
-      run: |
+      - name: Publish to VSCode marketplace
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
           npx vsce package
           npx vsce publish -p ${{ secrets.VSCE_PAT }}
-      env:
-        VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
