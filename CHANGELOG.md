@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.7](https://github.com/sabertazimi/LaTeX-snippets/compare/v1.0.6...v1.0.7) (2021-08-18)
+
+
+### :bug: Bug Fixes
+
+* **deps-dev:** remove duplicated packages ([b21683a](https://github.com/sabertazimi/LaTeX-snippets/commit/b21683a4eef9b8792127d9fa98286200a86f2acd))
+
+
+### :rocket: Building Work
+
+* **CI:** run CI building on each push and PR ([6de45d5](https://github.com/sabertazimi/LaTeX-snippets/commit/6de45d5bba5729168ad0e2fe0c388c9c259d16af))
+
 ### [1.0.6](https://github.com/sabertazimi/LaTeX-snippets/compare/v1.0.5...v1.0.6) (2021-08-12)
 
 
