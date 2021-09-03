@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/sabertazimi/LaTeX-snippets/compare/v1.0.7...v1.1.0) (2021-09-03)
+
+
+### :rocket: Building Work
+
+* **CI:** remove redundant stage ([ab6cd4a](https://github.com/sabertazimi/LaTeX-snippets/commit/ab6cd4a929c56f762d647073c0528af2cb246bfc))
+* **deps-dev:** bump vsce from 1.96.1 to 1.96.2 ([#7](https://github.com/sabertazimi/LaTeX-snippets/issues/7)) ([14ac5c1](https://github.com/sabertazimi/LaTeX-snippets/commit/14ac5c183dd3da3a53993dce2021b2e1e3d8a4f5))
+
 ### [1.0.7](https://github.com/sabertazimi/LaTeX-snippets/compare/v1.0.6...v1.0.7) (2021-08-18)
 
 
