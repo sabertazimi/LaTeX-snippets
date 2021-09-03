@@ -1,4 +1,4 @@
-name: Continuous Integration
+name: CI
 
 on:
   push:
@@ -12,17 +12,8 @@ on:
 
 jobs:
   build:
-    name: Node ${{ matrix.node-version }} - ${{ matrix.architecture }} on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os:
-          - ubuntu-latest
-        node-version:
-          - 16
-        architecture:
-          - x64
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    name: Building
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -32,18 +23,13 @@ jobs:
       - name: Setup Node environment
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
-          architecture: ${{ matrix.architecture }}
+          node-version: 16
+          architecture: x64
           registry-url: https://registry.npmjs.org/
           cache: 'npm'
       - name: Installation
         run: |
           npm ci
-      - name: Building work
-        run: |
-          npm run lint --if-present
-          npm run test --if-present
-          npm run build --if-present
       - name: Publish to VSCode marketplace
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
