@@ -1092,8 +1092,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "latex-snippets@workspace:."
   dependencies:
-    standard-version: ^9.3.1
-    vsce: ^1.97.0
+    standard-version: 9.3.1
+    vsce: 1.99.0
   languageName: unknown
   linkType: soft
 
@@ -1858,7 +1858,7 @@ resolve@^1.10.0:
   languageName: node
   linkType: hard
 
-"standard-version@npm:^9.3.1":
+"standard-version@npm:9.3.1":
   version: 9.3.1
   resolution: "standard-version@npm:9.3.1"
   dependencies:
@@ -2102,7 +2102,7 @@ resolve@^1.10.0:
   languageName: node
   linkType: hard
 
-"vsce@npm:^1.97.0":
+"vsce@npm:1.99.0":
   version: 1.99.0
   resolution: "vsce@npm:1.99.0"
   dependencies:
