@@ -1,5 +1,8 @@
 {
-  "extends": [
-    "config:base"
-  ]
+  "extends": ["config:base"],
+  "assignees": ["sabertazimi"],
+  "dependencyDashboard": false,
+  "labels": ["dependencies"],
+  "schedule": ["every weekend"],
+  "semanticCommitType": "build"
 }
