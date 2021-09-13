@@ -6,6 +6,10 @@
   "lockFileMaintenance": { "enabled": true },
   "packageRules": [
     {
+      "matchPackageNames": ["node"],
+      "enabled": false
+    },
+    {
       "matchUpdateTypes": [
         "minor",
         "patch",
