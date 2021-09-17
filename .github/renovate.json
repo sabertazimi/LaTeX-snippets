@@ -11,6 +11,10 @@
       "enabled": false
     },
     {
+      "matchPackageNames": ["vscode"],
+      "enabled": false
+    },
+    {
       "matchUpdateTypes": [
         "minor",
         "patch",
