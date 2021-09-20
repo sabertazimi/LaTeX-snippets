@@ -33,6 +33,7 @@
     "prelease": "standard-version --dry-run -s",
     "release": "standard-version -s"
   },
+  "packageManager": "yarn@3.0.2",
   "devDependencies": {
     "standard-version": "^9.3.1",
     "vsce": "^1.99.0"
