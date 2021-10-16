@@ -74,13 +74,13 @@ Contributions are greatly appreciated.
 Please fork this repository and open a pull request to add snippets.
 
 You can use [Snippet Generator](https://snippet-generator.app)
-to generate snippet from LaTex source code.
+to generate snippet from LaTeX source code.
 
 ## License
 
 Licensed under the [MIT](LICENSE) License.
 
-## For more information
+## See Also
 
 - [Visual Studio Code's LaTeX Support](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop)
 - [LaTeX Tutorials](https://www.overleaf.com/learn/latex/Tutorials)
