@@ -1093,7 +1093,7 @@ __metadata:
   resolution: "latex-snippets@workspace:."
   dependencies:
     standard-version: ^9.3.1
-    vsce: ^1.100.1
+    vsce: ^1.100.2
   languageName: unknown
   linkType: soft
 
@@ -2102,9 +2102,9 @@ resolve@^1.10.0:
   languageName: node
   linkType: hard
 
-"vsce@npm:^1.100.1":
-  version: 1.100.1
-  resolution: "vsce@npm:1.100.1"
+"vsce@npm:^1.100.2":
+  version: 1.100.2
+  resolution: "vsce@npm:1.100.2"
   dependencies:
     azure-devops-node-api: ^11.0.1
     chalk: ^2.4.2
@@ -2129,8 +2129,8 @@ resolve@^1.10.0:
     yauzl: ^2.3.1
     yazl: ^2.2.2
   bin:
-    vsce: out/vsce
-  checksum: e2228c77ebecd3f3f89503fec1d756d3608c473273abe65c0d08934ffdafabd20466dfea9a3d5ae9127e2da0fc2fd103cf542e720774e99f670a8355f2996d20
+    vsce: vsce
+  checksum: e52eb5281b161ed0605dba49618f8c4050780e8daa1e409565839720e5d876e782d80dedd4cdf0c334496958c33c6784d946fa453e96bd056875bddff562324c
   languageName: node
   linkType: hard
 
