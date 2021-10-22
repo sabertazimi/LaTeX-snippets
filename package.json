@@ -35,7 +35,7 @@
   },
   "packageManager": "yarn@3.0.2",
   "devDependencies": {
-    "standard-version": "^9.3.1",
+    "standard-version": "^9.3.2",
     "vsce": "^1.100.2"
   }
 }
