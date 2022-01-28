@@ -192,12 +192,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"argparse@npm:^1.0.7":
-  version: 1.0.10
-  resolution: "argparse@npm:1.0.10"
-  dependencies:
-    sprintf-js: ~1.0.2
-  checksum: 7ca6e45583a28de7258e39e13d81e925cfa25d7d4aacbf806a382d3c02fcb13403a07fb8aeef949f10a7cfe4a62da0e2e807b348a5980554cc28ee573ef95945
+"argparse@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "argparse@npm:2.0.1"
+  checksum: 83644b56493e89a254bae05702abf3a1101b4fa4d0ca31df1c9985275a5a5bd47b3c27b7fa0b71098d41114d8ca000e6ed90cad764b306f8a503665e4d517ced
   languageName: node
   linkType: hard
 
@@ -913,10 +911,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"entities@npm:~2.0.0":
-  version: 2.0.3
-  resolution: "entities@npm:2.0.3"
-  checksum: 5a7899fcc622e0d76afdeafe4c58a6b40ae3a8ee4772e5825a648c11a2ca324a9a02515386f512e466baac4aeb551f3d3b79eaece5cd98369b9f8601be336b1a
+"entities@npm:~2.1.0":
+  version: 2.1.0
+  resolution: "entities@npm:2.1.0"
+  checksum: a10a877e489586a3f6a691fe49bf3fc4e58f06c8e80522f08214a5150ba457e7017b447d4913a3fa041bda06ee4c92517baa4d8d75373eaa79369e9639225ffd
   languageName: node
   linkType: hard
 
@@ -1503,7 +1501,7 @@ __metadata:
   resolution: "latex-snippets@workspace:."
   dependencies:
     standard-version: ^9.3.2
-    vsce: ^2.6.3
+    vsce: ^2.6.5
   languageName: unknown
   linkType: soft
 
@@ -1521,12 +1519,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"linkify-it@npm:^2.0.0":
-  version: 2.2.0
-  resolution: "linkify-it@npm:2.2.0"
+"linkify-it@npm:^3.0.1":
+  version: 3.0.3
+  resolution: "linkify-it@npm:3.0.3"
   dependencies:
     uc.micro: ^1.0.1
-  checksum: d198871d0b3f3cfdb745dae564bfd6743474f20cd0ef1057e6ca29451834749e7f3da52b59b4de44e98f31a1e5c71bdad160490d4ae54de251cbcde57e4d7837
+  checksum: 31367a4bb70c5bbc9703246236b504b0a8e049bcd4e0de4291fa50f0ebdebf235b5eb54db6493cb0b1319357c6eeafc4324c9f4aa34b0b943d9f2e11a1268fbc
   languageName: node
   linkType: hard
 
@@ -1641,18 +1639,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"markdown-it@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "markdown-it@npm:10.0.0"
+"markdown-it@npm:^12.3.2":
+  version: 12.3.2
+  resolution: "markdown-it@npm:12.3.2"
   dependencies:
-    argparse: ^1.0.7
-    entities: ~2.0.0
-    linkify-it: ^2.0.0
+    argparse: ^2.0.1
+    entities: ~2.1.0
+    linkify-it: ^3.0.1
     mdurl: ^1.0.1
     uc.micro: ^1.0.5
   bin:
     markdown-it: bin/markdown-it.js
-  checksum: 69f5ee640cbebb451b80d3cce308fff7230767e05c0f8c206a1e413775b7a6e5a08e91e9f3ec59f9b5c5a45493f9ce7ac089379cffb60c9d3e6677ed9d535086
+  checksum: 890555711c1c00fa03b936ca2b213001a3b9b37dea140d8445ae4130ce16628392aad24b12e2a0a9935336ca5951f2957a38f4e5309a2e38eab44e25ff32a41e
   languageName: node
   linkType: hard
 
@@ -2604,13 +2602,6 @@ resolve@^1.10.0:
   languageName: node
   linkType: hard
 
-"sprintf-js@npm:~1.0.2":
-  version: 1.0.3
-  resolution: "sprintf-js@npm:1.0.3"
-  checksum: 19d79aec211f09b99ec3099b5b2ae2f6e9cdefe50bc91ac4c69144b6d3928a640bb6ae5b3def70c2e85a2c3d9f5ec2719921e3a59d3ca3ef4b2fd1a4656a0df3
-  languageName: node
-  linkType: hard
-
 "ssri@npm:^8.0.0, ssri@npm:^8.0.1":
   version: 8.0.1
   resolution: "ssri@npm:8.0.1"
@@ -2957,9 +2948,9 @@ resolve@^1.10.0:
   languageName: node
   linkType: hard
 
-"vsce@npm:^2.6.3":
-  version: 2.6.3
-  resolution: "vsce@npm:2.6.3"
+"vsce@npm:^2.6.5":
+  version: 2.6.5
+  resolution: "vsce@npm:2.6.5"
   dependencies:
     azure-devops-node-api: ^11.0.1
     chalk: ^2.4.2
@@ -2969,7 +2960,7 @@ resolve@^1.10.0:
     hosted-git-info: ^4.0.2
     keytar: ^7.7.0
     leven: ^3.1.0
-    markdown-it: ^10.0.0
+    markdown-it: ^12.3.2
     mime: ^1.3.4
     minimatch: ^3.0.3
     parse-semver: ^1.1.1
@@ -2983,7 +2974,7 @@ resolve@^1.10.0:
     yazl: ^2.2.2
   bin:
     vsce: vsce
-  checksum: 809e54665b2b3d0cc14657a33720445d1e7f363aca94a76eea09a63513b197b9478970a6a81c0505162fc8f4e3dc555cda2e3773bdce694676ee861a1b587bab
+  checksum: db8bbe1b41f8fda0823219ac0b68913139ac1bd603d261a07c842941c1e0c6fd00a354cfa989bf1cd58f8ed4d1306dddb36127a9e7fd2c302b97e1eded46da66
   languageName: node
   linkType: hard
 
