@@ -531,7 +531,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"conventional-changelog-conventionalcommits@npm:4.6.3":
+"conventional-changelog-conventionalcommits@npm:4.6.3, conventional-changelog-conventionalcommits@npm:^4.5.0":
   version: 4.6.3
   resolution: "conventional-changelog-conventionalcommits@npm:4.6.3"
   dependencies:
@@ -539,17 +539,6 @@ __metadata:
     lodash: ^4.17.15
     q: ^1.5.1
   checksum: 7b8e8a21ebb56f9aaa510e12917b7c609202072c3e71089e0a09630c37c2e8146cdb04364809839b0e3eb55f807fe84d03b2079500b37f6186d505848be5c562
-  languageName: node
-  linkType: hard
-
-"conventional-changelog-conventionalcommits@npm:^4.5.0":
-  version: 4.6.1
-  resolution: "conventional-changelog-conventionalcommits@npm:4.6.1"
-  dependencies:
-    compare-func: ^2.0.0
-    lodash: ^4.17.15
-    q: ^1.5.1
-  checksum: f866616c8f6f21cea005b42792451bfbd16bd4d82872867d1218f67a7993a53c5d87e26d6b483d9252e8022f2e4570e6cf9fa2a409aae5a3d73eea92ccf78b13
   languageName: node
   linkType: hard
 
@@ -1503,7 +1492,7 @@ __metadata:
   resolution: "latex-snippets@workspace:."
   dependencies:
     standard-version: ^9.5.0
-    vsce: ^2.8.0
+    vsce: ^2.9.1
   languageName: unknown
   linkType: soft
 
@@ -2942,9 +2931,9 @@ resolve@^1.10.0:
   languageName: node
   linkType: hard
 
-"vsce@npm:^2.8.0":
-  version: 2.8.0
-  resolution: "vsce@npm:2.8.0"
+"vsce@npm:^2.9.1":
+  version: 2.9.1
+  resolution: "vsce@npm:2.9.1"
   dependencies:
     azure-devops-node-api: ^11.0.1
     chalk: ^2.4.2
@@ -2968,7 +2957,7 @@ resolve@^1.10.0:
     yazl: ^2.2.2
   bin:
     vsce: vsce
-  checksum: 42beea236b626d7b439915eb9376d6b33674980a66a9c4c52b4955f9ab5e332ab82b4ce2f17bcafad9e791d9705410d0f55f68a2b0dc11ea121b6c7ce0ac00d5
+  checksum: c1af8d8a40139b35b23e71db4b9203ff99393754d6781dcc959df88c7d1f5f8c24c278b087f3de95e57a05e5444d93b65a0ab4b514798c8b6a396fc8a6d97afd
   languageName: node
   linkType: hard
 
