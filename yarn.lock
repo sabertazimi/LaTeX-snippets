@@ -87,9 +87,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vscode/vsce@npm:^2.17.0":
-  version: 2.17.0
-  resolution: "@vscode/vsce@npm:2.17.0"
+"@vscode/vsce@npm:^2.18.0":
+  version: 2.18.0
+  resolution: "@vscode/vsce@npm:2.18.0"
   dependencies:
     azure-devops-node-api: ^11.0.1
     chalk: ^2.4.2
@@ -97,6 +97,7 @@ __metadata:
     commander: ^6.1.0
     glob: ^7.0.6
     hosted-git-info: ^4.0.2
+    jsonc-parser: ^3.2.0
     keytar: ^7.7.0
     leven: ^3.1.0
     markdown-it: ^12.3.2
@@ -116,7 +117,7 @@ __metadata:
       optional: true
   bin:
     vsce: vsce
-  checksum: 5106662a4a5c258d1264aa084f599428f062d221b8f4e2fc806ccec9916e28bb22779db2cb53da3cc7e0a4243fdc435e0b90b8f064bef755cdf0751888b0cf64
+  checksum: 75eb2544e9976f9bc58b00c447496ba7c537d48eb1daf46e3ed2c29fd65517e90061c2448947ad5671576d3c6d460b164f39495738fda7198ee37818b5695397
   languageName: node
   linkType: hard
 
@@ -1212,14 +1213,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graceful-fs@npm:^4.1.2":
-  version: 4.2.8
-  resolution: "graceful-fs@npm:4.2.8"
-  checksum: 5d224c8969ad0581d551dfabdb06882706b31af2561bd5e2034b4097e67cc27d05232849b8643866585fd0a41c7af152950f8776f4dd5579e9853733f31461c6
-  languageName: node
-  linkType: hard
-
-"graceful-fs@npm:^4.2.6":
+"graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.2.6":
   version: 4.2.10
   resolution: "graceful-fs@npm:4.2.10"
   checksum: 3f109d70ae123951905d85032ebeae3c2a5a7a997430df00ea30df0e3a6c60cf6689b109654d6fdacd28810a053348c4d14642da1d075049e6be1ba5216218da
@@ -1288,16 +1282,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hosted-git-info@npm:^4.0.0, hosted-git-info@npm:^4.0.1":
-  version: 4.0.2
-  resolution: "hosted-git-info@npm:4.0.2"
-  dependencies:
-    lru-cache: ^6.0.0
-  checksum: d1b2d7720398ce96a788bd38d198fbddce089a2381f63cfb01743e6c7e5aed656e5547fe74090fb9fe53b2cb785b0e8c9ebdddadff48ed26bb471dd23cd25458
-  languageName: node
-  linkType: hard
-
-"hosted-git-info@npm:^4.0.2":
+"hosted-git-info@npm:^4.0.0, hosted-git-info@npm:^4.0.1, hosted-git-info@npm:^4.0.2":
   version: 4.1.0
   resolution: "hosted-git-info@npm:4.1.0"
   dependencies:
@@ -1518,6 +1503,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jsonc-parser@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "jsonc-parser@npm:3.2.0"
+  checksum: 946dd9a5f326b745aa326d48a7257e3f4a4b62c5e98ec8e49fa2bdd8d96cef7e6febf1399f5c7016114fd1f68a1c62c6138826d5d90bc650448e3cf0951c53c7
+  languageName: node
+  linkType: hard
+
 "jsonparse@npm:^1.2.0":
   version: 1.3.1
   resolution: "jsonparse@npm:1.3.1"
@@ -1547,7 +1539,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "latex-snippets@workspace:."
   dependencies:
-    "@vscode/vsce": ^2.17.0
+    "@vscode/vsce": ^2.18.0
     standard-version: ^9.5.0
   languageName: unknown
   linkType: soft
@@ -1757,21 +1749,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^3.0.3, minimatch@npm:^3.1.1":
+"minimatch@npm:^3.0.3, minimatch@npm:^3.0.4, minimatch@npm:^3.1.1":
   version: 3.1.2
   resolution: "minimatch@npm:3.1.2"
   dependencies:
     brace-expansion: ^1.1.7
   checksum: c154e566406683e7bcb746e000b84d74465b3a832c45d59912b9b55cd50dee66e5c4b1e5566dba26154040e51672f9aa450a9aef0c97cfc7336b78b7afb9540a
-  languageName: node
-  linkType: hard
-
-"minimatch@npm:^3.0.4":
-  version: 3.0.4
-  resolution: "minimatch@npm:3.0.4"
-  dependencies:
-    brace-expansion: ^1.1.7
-  checksum: 66ac295f8a7b59788000ea3749938b0970344c841750abd96694f80269b926ebcafad3deeb3f1da2522978b119e6ae3a5869b63b13a7859a456b3408bd18a078
   languageName: node
   linkType: hard
 
@@ -1795,17 +1778,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimist@npm:^1.2.0, minimist@npm:^1.2.3":
+"minimist@npm:^1.2.0, minimist@npm:^1.2.3, minimist@npm:^1.2.5":
   version: 1.2.8
   resolution: "minimist@npm:1.2.8"
   checksum: 75a6d645fb122dad29c06a7597bddea977258957ed88d7a6df59b5cd3fe4a527e253e9bbf2e783e4b73657f9098b96a5fe96ab8a113655d4109108577ecf85b0
-  languageName: node
-  linkType: hard
-
-"minimist@npm:^1.2.5":
-  version: 1.2.5
-  resolution: "minimist@npm:1.2.5"
-  checksum: 86706ce5b36c16bfc35c5fe3dbb01d5acdc9a22f2b6cc810b6680656a1d2c0e44a0159c9a3ba51fb072bb5c203e49e10b51dcd0eec39c481f4c42086719bae52
   languageName: node
   linkType: hard
 
@@ -2528,18 +2504,7 @@ resolve@^1.10.0:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.1.1, semver@npm:^7.3.4":
-  version: 7.3.5
-  resolution: "semver@npm:7.3.5"
-  dependencies:
-    lru-cache: ^6.0.0
-  bin:
-    semver: bin/semver.js
-  checksum: 5eafe6102bea2a7439897c1856362e31cc348ccf96efd455c8b5bc2c61e6f7e7b8250dc26b8828c1d76a56f818a7ee907a36ae9fb37a599d3d24609207001d60
-  languageName: node
-  linkType: hard
-
-"semver@npm:^7.3.5":
+"semver@npm:^7.1.1, semver@npm:^7.3.4, semver@npm:^7.3.5":
   version: 7.3.8
   resolution: "semver@npm:7.3.8"
   dependencies:
