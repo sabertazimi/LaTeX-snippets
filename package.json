@@ -30,12 +30,12 @@
   },
   "scripts": {
     "publish": "vsce package && vsce publish",
-    "prelease": "standard-version --dry-run -s",
-    "release": "standard-version -s"
+    "changeset": "commit-and-tag-version --dry-run -s",
+    "release": "commit-and-tag-version -s"
   },
   "packageManager": "yarn@3.4.1",
   "devDependencies": {
     "@vscode/vsce": "^2.18.0",
-    "standard-version": "^9.5.0"
+    "commit-and-tag-version": "^11.1.0"
   }
 }
