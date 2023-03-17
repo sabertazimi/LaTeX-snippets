@@ -510,9 +510,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commit-and-tag-version@npm:^11.1.0":
-  version: 11.1.0
-  resolution: "commit-and-tag-version@npm:11.1.0"
+"commit-and-tag-version@npm:^11.2.0":
+  version: 11.2.0
+  resolution: "commit-and-tag-version@npm:11.2.0"
   dependencies:
     chalk: ^2.4.2
     conventional-changelog: 3.1.25
@@ -530,7 +530,7 @@ __metadata:
     yargs: ^17.0.0
   bin:
     commit-and-tag-version: bin/cli.js
-  checksum: 59492dc48f3c8d2d7315daca9a801719ce9dcec08caba8e1a494620477399d6af5fe309cfebfd5a9e4379e07df2b5df60de4c308c7cb14fbaf6ab3e7637d5f31
+  checksum: d14ed54771222fa768509df6e520c857f2172b6e4ad09ddc7d21fc3993e8b4bd6cf09b11af1d78e4238f3c22a113c1e1b82ada18d72e50e22cccc67f1494cb73
   languageName: node
   linkType: hard
 
@@ -1586,7 +1586,7 @@ __metadata:
   resolution: "latex-snippets@workspace:."
   dependencies:
     "@vscode/vsce": ^2.18.0
-    commit-and-tag-version: ^11.1.0
+    commit-and-tag-version: ^11.2.0
   languageName: unknown
   linkType: soft
 
