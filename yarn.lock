@@ -510,9 +510,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commit-and-tag-version@npm:^11.2.0":
-  version: 11.2.0
-  resolution: "commit-and-tag-version@npm:11.2.0"
+"commit-and-tag-version@npm:^11.2.1":
+  version: 11.2.1
+  resolution: "commit-and-tag-version@npm:11.2.1"
   dependencies:
     chalk: ^2.4.2
     conventional-changelog: 3.1.25
@@ -526,11 +526,10 @@ __metadata:
     find-up: ^5.0.0
     git-semver-tags: ^4.0.0
     semver: ^7.1.1
-    stringify-package: ^1.0.1
     yargs: ^17.0.0
   bin:
     commit-and-tag-version: bin/cli.js
-  checksum: d14ed54771222fa768509df6e520c857f2172b6e4ad09ddc7d21fc3993e8b4bd6cf09b11af1d78e4238f3c22a113c1e1b82ada18d72e50e22cccc67f1494cb73
+  checksum: 02000348cd81aef91e34a7643f27249a4965b0ec75ab996345277cb93ca79548662edf20c3b66f10fcfe0e9f53195b30a19bb702434488ce4f24a18d5122fa89
   languageName: node
   linkType: hard
 
@@ -1586,7 +1585,7 @@ __metadata:
   resolution: "latex-snippets@workspace:."
   dependencies:
     "@vscode/vsce": ^2.18.0
-    commit-and-tag-version: ^11.2.0
+    commit-and-tag-version: ^11.2.1
   languageName: unknown
   linkType: soft
 
@@ -2726,13 +2725,6 @@ resolve@^1.10.0:
   dependencies:
     safe-buffer: ~5.1.0
   checksum: 9ab7e56f9d60a28f2be697419917c50cac19f3e8e6c28ef26ed5f4852289fe0de5d6997d29becf59028556f2c62983790c1d9ba1e2a3cc401768ca12d5183a5b
-  languageName: node
-  linkType: hard
-
-"stringify-package@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "stringify-package@npm:1.0.1"
-  checksum: 462036085a0cf7ae073d9b88a2bbf7efb3792e3df3e1fd436851f64196eb0234c8f8ffac436357e355687d6030b7af42e98af9515929e41a6a5c8653aa62a5aa
   languageName: node
   linkType: hard
 
