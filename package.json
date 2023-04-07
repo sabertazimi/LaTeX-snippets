@@ -36,6 +36,6 @@
   "packageManager": "yarn@3.5.0",
   "devDependencies": {
     "@vscode/vsce": "^2.18.0",
-    "commit-and-tag-version": "^11.2.0"
+    "commit-and-tag-version": "^11.2.1"
   }
 }
