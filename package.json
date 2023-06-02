@@ -33,7 +33,7 @@
     "changeset": "commit-and-tag-version --dry-run -s",
     "release": "commit-and-tag-version -s"
   },
-  "packageManager": "yarn@3.5.1",
+  "packageManager": "yarn@3.6.0",
   "devDependencies": {
     "@vscode/vsce": "^2.19.0",
     "commit-and-tag-version": "^11.2.1"
