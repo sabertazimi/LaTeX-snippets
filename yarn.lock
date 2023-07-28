@@ -87,9 +87,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vscode/vsce@npm:^2.19.0":
-  version: 2.19.0
-  resolution: "@vscode/vsce@npm:2.19.0"
+"@vscode/vsce@npm:^2.20.0":
+  version: 2.20.0
+  resolution: "@vscode/vsce@npm:2.20.0"
   dependencies:
     azure-devops-node-api: ^11.0.1
     chalk: ^2.4.2
@@ -105,7 +105,7 @@ __metadata:
     minimatch: ^3.0.3
     parse-semver: ^1.1.1
     read: ^1.0.7
-    semver: ^5.1.0
+    semver: ^7.5.2
     tmp: ^0.2.1
     typed-rest-client: ^1.8.4
     url-join: ^4.0.1
@@ -117,7 +117,7 @@ __metadata:
       optional: true
   bin:
     vsce: vsce
-  checksum: 9f06978c431949041dfeb790953427fc8e1f2ba614824b9ab5ad715b20baf7a5d680144dfd9d800c26a23e15fefa3cc0ffec432dc9970fd6751c4b0794ca7a0f
+  checksum: ffd3824629845692f47ce6ef2016f7b6c87803a360b56c4cb7da48e24abb8b8da029d418c40ff1e9b124429ca0e0f9f979164f9b40fe427992d4074fab0dd227
   languageName: node
   linkType: hard
 
@@ -1637,7 +1637,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "latex-snippets@workspace:."
   dependencies:
-    "@vscode/vsce": ^2.19.0
+    "@vscode/vsce": ^2.20.0
     commit-and-tag-version: ^11.2.2
   languageName: unknown
   linkType: soft
@@ -2602,14 +2602,14 @@ resolve@^1.10.0:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.1.1, semver@npm:^7.3.4, semver@npm:^7.3.5":
-  version: 7.3.8
-  resolution: "semver@npm:7.3.8"
+"semver@npm:^7.1.1, semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.5.2":
+  version: 7.5.4
+  resolution: "semver@npm:7.5.4"
   dependencies:
     lru-cache: ^6.0.0
   bin:
     semver: bin/semver.js
-  checksum: ba9c7cbbf2b7884696523450a61fee1a09930d888b7a8d7579025ad93d459b2d1949ee5bbfeb188b2be5f4ac163544c5e98491ad6152df34154feebc2cc337c1
+  checksum: 12d8ad952fa353b0995bf180cdac205a4068b759a140e5d3c608317098b3575ac2f1e09182206bf2eb26120e1c0ed8fb92c48c592f6099680de56bb071423ca3
   languageName: node
   linkType: hard
 
