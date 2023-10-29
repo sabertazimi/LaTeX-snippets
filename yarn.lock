@@ -87,9 +87,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vscode/vsce@npm:^2.21.1":
-  version: 2.21.1
-  resolution: "@vscode/vsce@npm:2.21.1"
+"@vscode/vsce@npm:^2.22.0":
+  version: 2.22.0
+  resolution: "@vscode/vsce@npm:2.22.0"
   dependencies:
     azure-devops-node-api: ^11.0.1
     chalk: ^2.4.2
@@ -117,7 +117,7 @@ __metadata:
       optional: true
   bin:
     vsce: vsce
-  checksum: d597d97683ef9e592383a33906313534fc40ca2a030fc63c226451e3754baa013845f93b93e7648396a8d79106626ad65b60733fa03c47e4964ee98c6b7b6734
+  checksum: b167464960468152b78046d05125499ae6ce9245cc258eeba67fb1d72dd78eb96739c7c2e044af94c15298a59ecb7797baacc7552edc4e404c12fa3fbdb36532
   languageName: node
   linkType: hard
 
@@ -1637,7 +1637,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "latex-snippets@workspace:."
   dependencies:
-    "@vscode/vsce": ^2.21.1
+    "@vscode/vsce": ^2.22.0
     commit-and-tag-version: ^11.3.0
   languageName: unknown
   linkType: soft
