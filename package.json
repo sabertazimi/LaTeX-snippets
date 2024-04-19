@@ -35,7 +35,7 @@
   },
   "packageManager": "pnpm@8.15.7",
   "devDependencies": {
-    "@vscode/vsce": "^2.25.0",
-    "commit-and-tag-version": "^12.2.0"
+    "@vscode/vsce": "^2.26.0",
+    "commit-and-tag-version": "^12.4.0"
   }
 }
