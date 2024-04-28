@@ -36,6 +36,6 @@
   "packageManager": "pnpm@9.0.6",
   "devDependencies": {
     "@vscode/vsce": "^2.26.0",
-    "commit-and-tag-version": "^12.4.0"
+    "commit-and-tag-version": "^12.4.1"
   }
 }
