@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@vscode/vsce':
-        specifier: ^3.2.1
-        version: 3.2.1
+        specifier: ^3.2.2
+        version: 3.2.2
       commit-and-tag-version:
         specifier: ^12.5.0
         version: 12.5.0
@@ -143,8 +143,8 @@ packages:
   '@vscode/vsce-sign@2.0.4':
     resolution: {integrity: sha512-0uL32egStKYfy60IqnynAChMTbL0oqpqk0Ew0YHiIb+fayuGZWADuIPHWUcY1GCnAA+VgchOPDMxnc2R3XGWEA==}
 
-  '@vscode/vsce@3.2.1':
-    resolution: {integrity: sha512-AY9vBjwExakK1c0cI/3NN2Ey0EgiKLBye/fxl/ue+o4q6RZ7N+xzd1jAD6eI6eBeMVANi617+V2rxIAkDPco2Q==}
+  '@vscode/vsce@3.2.2':
+    resolution: {integrity: sha512-4TqdUq/yKlQTHcQMk/DamR632bq/+IJDomSbexOMee/UAYWqYm0XHWA6scGslsCpzY+sCWEhhl0nqdOB0XW1kw==}
     engines: {node: '>= 20'}
     hasBin: true
 
@@ -279,9 +279,9 @@ packages:
     resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
     engines: {node: '>= 0.8'}
 
-  commander@6.2.1:
-    resolution: {integrity: sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==}
-    engines: {node: '>= 6'}
+  commander@12.1.0:
+    resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
+    engines: {node: '>=18'}
 
   commit-and-tag-version@12.5.0:
     resolution: {integrity: sha512-Ll7rkKntH20iEFOPUT4e503Jf3J0J8jSN+aSeHuvNdtv4xmv9kSLSBg2CWsMVihwF3J2WvMHBEUSCKuDNesiTA==}
@@ -1580,7 +1580,7 @@ snapshots:
       '@vscode/vsce-sign-win32-arm64': 2.0.2
       '@vscode/vsce-sign-win32-x64': 2.0.2
 
-  '@vscode/vsce@3.2.1':
+  '@vscode/vsce@3.2.2':
     dependencies:
       '@azure/identity': 4.1.0
       '@vscode/vsce-sign': 2.0.4
@@ -1588,7 +1588,7 @@ snapshots:
       chalk: 2.4.2
       cheerio: 1.0.0-rc.12
       cockatiel: 3.1.2
-      commander: 6.2.1
+      commander: 12.1.0
       form-data: 4.0.0
       glob: 11.0.0
       hosted-git-info: 4.1.0
@@ -1760,7 +1760,7 @@ snapshots:
     dependencies:
       delayed-stream: 1.0.0
 
-  commander@6.2.1: {}
+  commander@12.1.0: {}
 
   commit-and-tag-version@12.5.0:
     dependencies:
