@@ -33,7 +33,7 @@
     "changeset": "commit-and-tag-version --dry-run -s",
     "release": "commit-and-tag-version -s"
   },
-  "packageManager": "pnpm@10.6.3",
+  "packageManager": "pnpm@10.6.5",
   "devDependencies": {
     "@vscode/vsce": "^3.3.0",
     "commit-and-tag-version": "^12.5.0"
