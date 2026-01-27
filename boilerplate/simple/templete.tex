@@ -1,0 +1,159 @@
+% !TEX program = xelatex
+% !BIB program = bibtex
+
+\documentclass[UTF8,cs4size]{ctexart}
+
+% layout
+\usepackage[left=3cm,right=3cm]{geometry}
+\usepackage{paralist}     % for compactitem environment
+\usepackage{indentfirst}  % ident the first paragraph
+\linespread{1.25}
+\ctexset{
+  section = {
+    name = \S
+  },
+  subsection/name = \S,
+  subsubsection/name = \S
+}
+% \makeatletter
+% \def\@seccntformat#1{%
+%   \expandafter\ifx\csname c@#1\endcsname\c@section
+%   Section \thesection:
+%   \else
+%   \csname the#1\endcsname\quad
+%   \fi}
+% \makeatother
+ 
+% page headings
+\usepackage{fancyhdr}
+\setlength{\headheight}{15.2pt}
+\pagestyle{fancy}
+\lhead{\leftmark}
+\rhead{M2018xxxxx xxx}
+\cfoot{\thepage}
+% \makeatletter
+% \let\headauthor\@author
+% \makeatother
+
+% footnote
+\renewcommand\thefootnote{\fnsymbol{footnote}}
+
+% url/ref
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks,
+  citecolor=black,
+  filecolor=black,
+  linkcolor=black,
+  urlcolor=black,
+  pdfauthor={xxx},
+  pdftitle={xxxxxxxxxx}
+}
+
+% vertical centering title page
+\usepackage{titling}
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+
+% table of contents
+\usepackage{tocloft}
+\renewcommand\cftsecfont{\normalfont}
+\renewcommand\cftsecpagefont{\normalfont}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftsecdotsep}}
+\renewcommand\cftsecdotsep{\cftdot}
+\renewcommand\cftsubsecdotsep{\cftdot}
+\renewcommand\cftsubsubsecdotsep{\cftdot}
+\renewcommand{\contentsname}{\hfill\bfseries\Large 目录\hfill}   
+\setlength{\cftbeforesecskip}{10pt}
+
+% figures
+\usepackage{graphicx}
+\graphicspath{figures/}
+% \newcommand\figureht{\dimexpr
+%   \textheight-3\baselineskip-\parskip-.2em-
+%   \abovecaptionskip-\belowcaptionskip\relax}
+
+% tables
+\usepackage{caption} 
+\captionsetup[table]{skip=10pt}
+
+% math, algorithms, code
+\usepackage{amsmath,amssymb,url}
+\usepackage{algorithm,algorithmicx,algpseudocode}
+\usepackage{listings}
+
+\newcommand*{\diff}{\mathop{}\!\mathrm{d}}
+
+\lstset{
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numberstyle=\footnotesize,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+
+% bibliography
+\usepackage[super,square,comma,sort]{natbib} % for \citet and \citep
+\renewcommand{\refname}{\S 参考文献}
+% \begin{filecontents}{report.bib}
+% \end{filecontents} 
+
+% appendix
+\usepackage{appendix}
+
+\providecommand{\keywords}[1]{
+  \begin{flushleft}
+    \small	
+    \textbf{\textit{Keywords---}} #1
+  \end{flushleft}
+}
+
+\title{xxxxxxxxxx\\ \bigskip \textbf{xxxxxxxxxxxxxxxxxxxx}}
+\author{计算机科学与技术学院\\ 硕xxxx\\ M2018xxxxx\\ xxx}
+\date{\today}
+
+\begin{document}
+
+\pagenumbering{gobble} % no page number
+\maketitle
+\newpage
+\null\thispagestyle{empty}
+\newpage
+
+% \pagenumbering{roman}
+% \section*{\S 摘要}\sectionmark{\S 摘要}
+% \addcontentsline{toc}{section}{\S 摘要}
+% \addcontentsline{toc}{section}{\protect\numberline{}\S 摘要}
+% \newpage
+% \pagenumbering{gobble} % no page number
+
+\tableofcontents
+\newpage
+\null\thispagestyle{empty}
+\newpage
+
+\pagenumbering{arabic}
+
+\section{引言}
+\newpage
+
+\section{相关工作}
+Tensorflow~\cite{DBLP:conf/osdi/AbadiBCCDDDGIIK16}
+
+\subsection{xxxxx}
+\subsection{xxxxx}
+
+\clearpage
+
+\bibliographystyle{unsrt}
+\bibliography{bibs/template}
+\addcontentsline{toc}{section}{\S 参考文献}
+\newpage
+
+\end{document}

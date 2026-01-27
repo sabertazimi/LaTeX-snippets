@@ -1,0 +1,220 @@
+\documentclass[UTF8,10pt,aspectratio=43]{ctexbeamer} 
+
+% 设置为 Beamer 文档类型，设置字体为 10pt，长宽比为16:9，数学字体为 serif 风格
+
+\batchmode
+
+% 导入一些用到的宏包
+\usepackage{amsmath,bm,amsfonts,amssymb,enumerate,epsfig,bbm,calc,color,ifthen,capt-of,multimedia,hyperref}
+
+\usetheme{Berlin} %主题
+\usecolortheme{sustech} %主题颜色
+
+\usepackage{algorithm}  
+\usepackage{algorithmicx}  
+\usepackage{algpseudocode}
+\floatname{algorithm}{算法}
+\renewcommand{\algorithmicrequire}{\textbf{输入:}} 
+\renewcommand{\algorithmicensure}{\textbf{输出:}}  
+
+\algrenewcommand{\algorithmiccomment}[1]{ $//$ #1}
+
+\usepackage{fancybox}
+\usepackage{xcolor}
+\usepackage{times}
+\usepackage{listings}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\lstset{
+	backgroundcolor=\color{white},   % choose the background color
+	basicstyle=\footnotesize\ttfamily,     % size of fonts used for the code
+	columns=fullflexible,
+	breaklines=true,                 % automatic line breaking only at whitespace
+	captionpos=b,                    % sets the caption-position to bottom
+	tabsize=4,
+	commentstyle=\color{mygreen},    % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	keywordstyle=\color{blue},       % keyword style
+	stringstyle=\color{mymauve}\ttfamily,     % string literal style
+	numbers=left, 
+  %	frame=single,
+	rulesepcolor=\color{red!20!green!20!blue!20},
+	% identifierstyle=\color{red},
+	language=c
+}
+
+% \usepacakge[UTF8,no-math]{ctex}
+% \setCJKsansfont{SimHei} %字体采用黑体  Microsoft YaHei
+% \setsansfont{Microsoft YaHei}
+% \setmainfont{Microsoft YaHei}
+
+% 题目，作者，学校，日期
+\title{XXXXXXX}
+\subtitle{\fontsize{9pt}{14pt}\textbf{xxxxxxxxx}}
+\author{张伟}
+\institute{华中科技大学}
+\date{\today}
+
+% 学校Logo
+% \pgfdeclareimage[height=0.5cm]{sustech-logo}{sustech-logo.pdf}
+% \logo{\pgfuseimage{sustech-logo}\hspace*{0.3cm}}
+
+\AtBeginSection[]
+{
+	\begin{frame}<beamer>
+	\frametitle{\textbf{目录}}
+	\tableofcontents[currentsection]
+\end{frame}
+}
+\beamerdefaultoverlayspecification{<+->}
+% -----------------------------------------------------------------------------
+\begin{document}
+% -----------------------------------------------------------------------------
+
+\frame{\titlepage}
+
+\section[目录]{}   %目录
+\begin{frame}{目录}
+\tableofcontents
+\end{frame}
+
+\section{Web 安全漏洞现状综述}
+\begin{frame}{Web 安全漏洞现状综述}
+\begin{columns}[T] % align columns
+  \begin{column}{.40\textwidth}
+	  \begin{figure}[thpb]
+		  \centering
+		  \resizebox{1\linewidth}{!}{
+			  % \includegraphics{figures/sustech.pdf}
+		  }
+		  %\includegraphics[scale=1.0]{figurefile}
+		  \caption{SUSTech Campus~\cite{DBLP:conf/osdi/AbadiBCCDDDGIIK16}}
+		  \label{fig:campus}
+	  \end{figure}
+  \end{column}
+  
+  \hfill
+
+  \begin{column}{.65\textwidth}
+    \begin{table}[htbp]
+      \caption{Web 安全漏洞}
+      \label{tab:rank}
+      \centering
+			\footnotesize
+      \begin{tabular}[c]{l|l}
+        \hline
+        \multicolumn{1}{c|}{\textbf{占比}} & 
+        \multicolumn{1}{c}{\textbf{漏洞}} \\
+        \hline
+	      37\% & 跨域脚本(Cross-site scripting) \\
+	      16\% & SQL 注入(SQL injection) \\
+	      5\% & 路径泄露(Path disclosure) \\
+	      5\% & 拒绝服务攻击(Denial-of-service attack) \\
+	      4\% & 任意代码执行(Arbitrary code execution) \\
+        4\% & 内存崩溃(Memory corruption) \\
+	      4\% & 跨域请求伪造(Cross-site request forgery) \\
+	      3\% & 数据泄露(Data breach/Information disclosure) \\
+	      3\% & 任意文件包含(Arbitrary file inclusion) \\
+	      2\% & 本地文件包含(Local file inclusion) \\
+	      1\% & 远程文件包含(Remote file inclusion) \\
+	      1\% & 缓冲区溢出(Buffer overflow) \\
+        15\% & 其他 \\
+        \hline
+      \end{tabular}
+    \end{table}
+  \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{State of the art}
+  \begin{itemize}
+    \item Current anti-procrastination systems lack raw force
+    \begin{itemize}
+      \item Pomodoro, GTD, etc.
+    \end{itemize}
+    \item Raw force are often misused and in the wrong hands
+    \item People usually try to avoid punishment by telling lies
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{消息聚类分析}
+  \begin{block}{\textbf{基本思路}}
+	  \begin{itemize}
+		  \item 使用编辑距离矩阵将类似的消息归于一张连通图中。
+		  \item 使用固定值替换感兴趣的消息，如代码、email地址。
+		  \item 查找归一化距离小于阈值的消息，并确定聚类边界。
+	  \end{itemize}
+  \end{block}
+\end{frame}
+
+\subsection{算法}
+\begin{frame}{算法}
+\begin{columns}[T] % align columns
+   	\begin{column}{.5\textwidth}
+   	\begin{algorithm}[H]  
+   		\caption{algorithm caption} %算法的名字
+   		\hspace*{0.02in} {\bf Input:} %算法的输入， \hspace*{0.02in}用来控制位置，同时利用 \\ 进行换行
+   		input parameters A, B, C\\
+   		\hspace*{0.02in} {\bf Output:} %算法的结果输出
+   		output result 
+   		\begin{algorithmic}[1] %每行显示行号  
+   		\State some description % \State 后写一般语句
+   		\State ...
+   		\State \Return result	
+   		\end{algorithmic}  
+   \end{algorithm}
+   \end{column}
+
+   \hfill
+
+   \begin{column}{.40\textwidth}
+ 
+   \end{column}
+   \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{代码}
+\fontspec{Consolas}
+\begin{lstlisting}
+  inline int gcd(int a, int b) { 
+    return b==0?a:gcd(b,a%b)
+  }
+
+  inline int lcm(int a, int b) {
+    return a/gcd(a,b)*b;
+  }
+\end{lstlisting}
+\end{frame}
+
+\section*{参考文献}
+\begin{frame}{参考文献}
+  \tiny
+  \bibliographystyle{unsrt}
+  \bibliography{bibs/beamer}
+\end{frame}
+
+\begin{frame}{Thank you}
+  \begin{center}
+    \begin{minipage}{1\textwidth}
+	    \setbeamercolor{mybox}{fg=white, bg=black!50!blue}
+      \begin{beamercolorbox}[wd=0.70\textwidth, rounded=true, shadow=true]{mybox}
+      \LARGE \centering Thank you for listening!  %结束语
+      \end{beamercolorbox}
+    \end{minipage}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Q\&A}
+\begin{center}
+	\begin{minipage}{1\textwidth}
+		\setbeamercolor{mybox}{fg=white, bg=black!50!blue}
+		\begin{beamercolorbox}[wd=0.70\textwidth, rounded=true, shadow=true]{mybox}
+			\LARGE \centering  Questions?  %请求提问
+		\end{beamercolorbox}
+	\end{minipage}
+\end{center}
+\end{frame}
+
+\end{document}

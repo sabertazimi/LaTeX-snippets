@@ -1,0 +1,2092 @@
+% !TEX program = xelatex
+% !BIB program = bibtex
+
+\documentclass[UTF8,12pt,a4paper]{article}
+\usepackage{ctex}
+
+% layout
+\usepackage[left=2.5cm,right=2.5cm]{geometry}
+\usepackage{paralist}     % for compactitem environment
+\usepackage{indentfirst}  % ident the first paragraph
+\linespread{1.25}
+% \makeatletter
+% \def\@seccntformat#1{%
+%   \expandafter\ifx\csname c@#1\endcsname\c@section
+%   Section \thesection:
+%   \else
+%   \csname the#1\endcsname\quad
+%   \fi}
+% \makeatother
+ 
+% page headings
+\usepackage{fancyhdr}
+\setlength{\headheight}{15.2pt}
+\pagestyle{fancy}
+\lhead{\leftmark}
+\rhead{M201873026 Yilong Liu}
+\cfoot{\thepage}
+% \makeatletter
+% \let\headauthor\@author
+% \makeatother
+
+% url/ref
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks,
+  citecolor=black,
+  filecolor=black,
+  linkcolor=black,
+  urlcolor=black,
+  pdfauthor={Yilong Liu},
+  pdftitle={Graph Processing: state-of-the-art and research challenges}
+}
+
+% vertical centering title page
+\usepackage{titling}
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+
+% table of contents
+\usepackage{tocloft}
+\renewcommand\cftsecfont{\normalfont}
+\renewcommand\cftsecpagefont{\normalfont}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftsecdotsep}}
+\renewcommand\cftsecdotsep{\cftdot}
+\renewcommand\cftsubsecdotsep{\cftdot}
+\renewcommand\cftsubsubsecdotsep{\cftdot}
+\renewcommand{\contentsname}{\hfill\bfseries\Large Contents\hfill}   
+\setlength{\cftbeforesecskip}{10pt}
+\setcounter{tocdepth}{2}
+
+% figures
+\usepackage{graphicx}
+\graphicspath{figures/}
+% \newcommand\figureht{\dimexpr
+%   \textheight-3\baselineskip-\parskip-.2em-
+%   \abovecaptionskip-\belowcaptionskip\relax}
+
+
+% tables
+\usepackage{caption} 
+% \captionsetup[table]{skip=10pt}
+
+% math, algorithms, code
+\usepackage{amsmath,amssymb,url}
+\usepackage{algorithm,algorithmicx,algpseudocode}
+\usepackage{listings}
+
+\lstset{
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numberstyle=\footnotesize,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+
+% bibliography
+\usepackage[super,square,comma,sort]{natbib} % for \citet and \citep
+\renewcommand{\refname}{References}
+% \begin{filecontents}{report.bib}
+% \end{filecontents} 
+
+% appendix
+\usepackage{appendix}
+
+\title{Survey \\ \bigskip \textbf{Graph Processing: state-of-the-art and research challenges}}
+\author{Huazhong University of Science and Technology\\ School of Computer Science and Technology\\ M1801\\ M201873026\\ Yilong Liu}
+\date{\today}
+
+\begin{document}
+
+\pagenumbering{gobble} % no page number
+\maketitle
+\newpage
+% \null\thispagestyle{empty}
+% \newpage
+
+% \pagenumbering{roman}
+% \section*{Abstract}\sectionmark{Abstract}
+% \addcontentsline{toc}{section}{Abstract}
+% \addcontentsline{toc}{section}{\protect\numberline{}Abstract}
+% \newpage
+% \pagenumbering{gobble} % no page number
+
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+% \null\thispagestyle{empty}
+% \newpage
+
+\pagenumbering{arabic}
+
+\section{Workload Characterization}
+\begin{compactitem}
+  \item Memory bandwidth is not fully utilized.
+  there is the potential for significant performance improvement
+  on graph codes with current off-chip memory systems.
+  \item Graph codes exhibit substantial locality.
+  Optimized graph codes experience a moderately
+  high last-level cache (LLC) hit rate.
+  \item Reorder buffer size limits achievable memory throughput.
+  The relatively high LLC hit rate implies
+  many instructions are executed for each LLC miss.
+  These instructions fill the reorder buffer in the core,
+  preventing future loads that will miss in the LLC from issuing early,
+  resulting in unused memory bandwidth.
+  \item Multithreading has limited potential for graph processing
+  Likely achievable performance with only a modest number (2) of threads per core.
+\end{compactitem}
+
+Because message-passing is far less efficient than accessing memory in contemporary systems,
+the efficiency of each core in a cluster is on average
+one to two orders-of-magnitude lower than cores in shared-memory nodes.
+This communication-bound behavior has led to
+a single SSD Node is able to outperform a medium-sized cluster~\cite{DBLP:conf/osdi/KyrolaBG12}.
+
+Graph algorithms have their scaling hampered by
+load imbalance, synchronization overheads, and non-uniform memory access (NUMA) penalties.
+Different input graph sizes and topologies can lead to
+very different conclusions for algorithms and architectures.
+
+References from~\cite{DBLP:conf/iiswc/BeamerAP15}~\cite{DBLP:conf/usenix/MalicevicLZ17}.
+
+\subsection{Terminology}
+\begin{compactitem}
+  \item $\text{TEPS} = (\#\text{Edges} * \text{Average Diameter}) / (\#\text{Cycles} * T)$
+\end{compactitem}
+
+\subsection{Graph Shape}
+Graphs can be divided into two broad categories: meshes and social networks.
+Meshes (such as road maps or the finiteelement mesh of a simulated car body)
+usually have a high diameter
+and a degree distribution that is both bounded and low.
+social networks have a low diameter (``small-world'')
+and a power-law degree distribution (``scale-free'').
+
+In a small-world graph, most nodes are not neighbors of one another,
+but most nodes can be reached from every other by a small number of hops.
+A scalefree graph has a degree distribution
+that follows a power law, at least asymptotically.
+The small-world property makes them difficult to partition,
+the scale-free property difficult to load balance a parallel execution.
+
+Uniform graph is low diameter, like a social network,
+but its degree distribution is normal rather than a power law.
+Uniform represents the most adversarial graph,
+as by design it has no locality,
+it serves to act as lower bound on performance.
+
+For small-world grpah, prefetching subsequent memory blocks does not always
+improve performance due to small neighborhoods~\cite{DBLP:journals/corr/abs-1903-06697}.
+
+For dynamic growing graphs, previous research found~\cite{DBLP:conf/kdd/LeskovecKF05}:
+\begin{compactitem}
+  \item densification power law: networks are becoming denser over time.
+  \item shrinking diameter: diameter is decreasing as the network grows.
+\end{compactitem}
+
+Useful graph generators:
+\begin{compactitem}
+  \item R-MAT Graphs
+  \item Kronecker Graphs~\cite{DBLP:journals/jmlr/LeskovecCKFG10}
+\end{compactitem}
+
+\subsection{Locality Benchmark}
+No executions sustain a high IPC and a high memory bandwidth
+(MLP, memory-level parallelism).
+(\textbf{tradeoff} between \textbf{computation} and \textbf{communication})
+A processor can only execute instructions at a high rate
+if it rarely waits on memory, and hence consumes little memory bandwidth.
+Some executions are actually in the worst lower-left quadrant,
+where they use little memory bandwidth, but their compute throughput is also low,
+presumably due to \textbf{memory latency}.
+MLP ($memory bandwidth \times memory latency$) $\propto$ MPKI (misses per kilo-instructions).
+
+TLB misses are only measurably detrimental when
+at least a moderate amount of memory bandwidth is utilized.
+Maximum bandwidth obtained with the larger array is substantially
+reduced due to increases in TLB refill time (THP is useful to MLP)
+(confirmed by performance counters).
+
+If the processor is already achieving moderate memory bandwidth utilization,
+performance is insensitive to the branch misprediction rate.
+When the processor is not memory-bound,
+frequent branch mispredictions will hurt performance.
+
+Lower cache misses, lower memory bandwidth.
+Higher degress and scale-free graphs has lower cache misses.
+
+With more cores, this NUMA penalty is reduced,
+and for executions that use less memory bandwidth,
+the NUMA penalty is reduced further.
+Moving computation is better than moving data
+when optimizing graph processing for NUMA.
+
+Multithreading also has the potential to introduce new performance challenges.
+More threads increase parallelism, which in turn can worsen the damage
+caused by \textbf{load imbalances} and \textbf{synchronization overheads}.
+If the workload of the two threads is heterogenous it is possible
+for an SMT core to exceed MLP/IPM model.
+One thread could generate most of the cache misses
+sustaining a high effective MLP
+while the other thread (unencumbered by cache misses)
+could execute instructions quickly to increase IPM.
+
+Many techniques can improve performance,
+but all of them will have quickly diminishing returns,
+so greatly improving performance will require a multifaceted approach.
+\subsubsection{Locality Tips}
+\begin{compactitem}
+  \item To ensure consistency across runs,
+  disable Turbo Boost (dynamic voltage and frequency scaling).
+  \item To generate more MLP,
+  add more parallel pointer chases to the same thread.
+\end{compactitem}
+
+\subsection{Graph Representation}
+\begin{compactitem}
+  \item adjacency lists: dynamic allocation/count sort/radix sort.
+  \item CSR/CSC.
+\end{compactitem}
+\subsubsection{CSR/CSC}
+CSR 行压缩使得顶点的出边被连续存储, CSC 列压缩使得顶点的入边被连续存储,
+若仅使用行压缩, 则可以连续地访问顶点的出边而需要随机访问顶点的入边.
+若同时使用行压缩和列压缩, 则图中所有的边将被存储两份,
+当修改边的值时, 存在数据同步的问题.
+
+\subsection{Graph Algorithms}
+Differ in \# of active vertices per iteration:
+\begin{compactitem}
+  \item only a subset active: BFS (vertex-centric + CSR/CSC).
+  \item entire graph active: Pagerank, SpMV ...
+\end{compactitem}
+\subsubsection{Combinatorial Abstraction for BFS}
+A work-efficient parallel breadth-first search algorithm
+~\cite{DBLP:conf/spaa/LeisersonS10}
+
+The level-synchronous BFS algorithm~\cite{DBLP:conf/ipps/AttiaJTJZ14}
+uses three sets of nodes as follows:
+\begin{compactitem}
+  \item Set of current nodes ($Q_c$).
+  \item Set of next nodes ($Q_n$).
+  \item Visited nodes ($V$).
+\end{compactitem}
+
+The algorithm starts with the root node in the current set.
+Iteratively, the algorithm visits all the nodes in $Q_c$,
+sets their level as the current level
+and collects the next-level set $Q_n$.
+In the next iteration, $Q_c$ is populated with values from $Q_n$,
+and $Q_n$ is cleared for the new level.
+\subsubsection{Two Way Optimization}
+Beamer~\cite{DBLP:conf/sc/BeamerAP12} (used in Ligra and FPGA-HMC case)
+propose a hybrid approach that is advantageous for low-diameter graphs,
+which combines a conventional top-down algorithm
+along with a novel bottom-up algorithm.
+In this method, instead of iterating through the frontier,
+it iterate through the unvisited vertices array when frontier size becomes large.
+The bottom-up algorithm can dramatically reduce the number of edges examined,
+which in turn accelerates the search as a whole.
+\subsubsection{Enhanced CSR Format}
+$C[i]$ represents destination of i-nth outgoing edge.
+For bits of $R[i]$ (described in algorithm~\ref{alg:enhanced_csr}):
+\begin{compactitem}
+  \item $R[i]_0$ represent visit status.
+  \item $R[i]_1$ represnet existence of outgoing edge of $Node_i$.
+  \item $R[i]_{63...2}$:
+  when $R[i]_0 == 0$ (not visited),
+  $R[i]_{63...32}$ for neighbors' start offset
+  and $R[i]_{31...2}$ for neighbors' end offset
+  when $R[i]_0 == 1$ (visited),
+  $R[i]_{63...1}$ for visit level of $Node_i$.
+\end{compactitem}
+\begin{algorithm}
+  \floatname{algorithm}{Algorithm}
+  \algrenewcommand\algorithmicrequire{\textbf{Input: }}
+  \algrenewcommand\algorithmicensure{\textbf{Output: }}
+  \caption{Enhanced CSR Format}
+  \label{alg:enhanced_csr}
+  \begin{algorithmic}[1]
+    \For{$cur = R[i]_{63...32}:R[i]_{31...2}$}
+      \State $C[cur]$ ...
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+The edge-centric BFS requires several passes over the edges,
+with each pass only processing those edges that are currently in the frontier.
+This takes $O(Dm)$ time, a factor of $D$ more than when using the traditional BFS variant
+with $O(m)$ time ~\cite{DBLP:conf/hpdc/BestaPGSH17}.
+\subsubsection{Algebraic Abstraction for BFS}
+Graph algorithms are expressed with basic linear algebra structures
+and operations such as a series of matrix-vector (MV) or matrix-matrix (MM) products
+over various semirings~\cite{DBLP:conf/fpl/UmurogluMJ15}.
+BFS based on MV uses no explicit locking or atomics
+and has a succinct description~\cite{DBLP:conf/ipps/BestaMSH17}.
+\subsubsection{Compressed Graph Representation}
+LogGraph~\cite{DBLP:conf/IEEEpact/BestaSZSHH18}
+achieves high compression ratios as well as performance.
+
+\subsection{Processing Model}
+\subsubsection{Vertex Centric Paradigm}
+Many famous systems adopt
+vertex-centric processing paradigm~\cite{DBLP:journals/csur/McCuneWM15}.
+Vertex-centric paradigm has expressive potentials
+to easily represent various kinds of graph algorithms,
+and the high parallelism in the grain of vertex.
+However, in the vertex-centric paradigm,
+there can be \textit{random accesses to edges},
+resulting in potentially heavy memory access overhead.
+
+Vertex programs only depend on data local to a vertex
+and reduce computational complexity by increasing communication between program kernels.
+As a result, TLAV frameworks are highly scalable and inherently parallel,
+with manageable intermachine communication~\cite{DBLP:journals/csur/McCuneWM15}.
+
+In the vertex-centric model, a vertex is very short sighted:
+it only has information about its immediate neighbors,
+therefore information is propagated through graphs slowly,
+A TLAV-based framework may face the problem of slow convergence 
+especially for large-diameter graphs.
+\textit{one hop at a time}.
+As a result, it takes many computation steps
+to propagate a piece of information from a source to a destination,
+even if both appear in the same graph partition~\cite{DBLP:journals/csur/HeidariSCB18}.
+\subsubsection{Edge Centric Paradigm}
+Edge-centric paradigm is lack of flexible scheduling potential
+in contrast to the vertex-centric one.
+Almost all of edges have to be processed multiple times
+to complete the whole process.
+This paradigm may also lead to
+a large number of random accesses to vertices~\cite{DBLP:conf/usenix/MalicevicLZ17}.
+\subsubsection{Subgraph Centeric Paradigm}
+A subgraph can be partitioned into a size small enough to fit into memory
+(considering computation) while the connections between subgraphs would be likely
+much less than the total number of edges.
+The system would better utilize processing while retaining scalability
+(Giraph++, Blogel)~\cite{DBLP:journals/csur/McCuneWM15}.
+
+In contrast to a vertex-centric model that hides partitioning
+and component connectivity details from users,
+a TLAV-based framework may face the problem of slow convergence 
+especially for large-diameter graphs.
+Subgraph-centric graph processing system
+exposes the partition’s structure to the users to allow optimizations
+(pass subgraph information to user-defined function).
+So, the performance of the system depends on the partitioning strategy that is used
+and how effectively users exploit the access to the coarse components in their execution.
+On the other hand, communication within a partition is by \textit{direct memory access},
+which is faster than passing messages between each single vertex in a vertex-centric model.
+Vertices in the same partition can exchange their state
+and perform consequent computations to the extent possible \textit{in the same iteration}
+~\cite{DBLP:journals/csur/HeidariSCB18}.
+Only one step is needed if these two vertices appear in the same graph partition.
+
+However, subgraph-centric programming algorithms are vulnerable
+to imbalances in the number of subgraphs per iteration
+as well as non-uniformity in their sizes.
+The time complexity per iteration also can be larger
+since it often runs the single machine graph algorithm on each subgraph,
+even as it often takes much fewer iterations.
+The benefits are also more pronounced for graphs with large diameter,
+rather than small-diameter power-law graphs
+~\cite{DBLP:journals/csur/HeidariSCB18}.
+\subsubsection{Path Centeric Paradigm}
+Amore specific type of subgraph, a traversal tree,
+is used for the programming model in PathGraph.
+for the path-centric computational model,
+Path-centric scatter and path-centric gather functions
+are available to the user to define an algorithm that traverses each tree.
+The user also defines a vertex update function,
+which is executed by the path-centric functions during the traversal.
+The path-centric model utilizes locality to improve performance
+through reduced memory usage and efficient caching.
+\subsubsection{BSP Model}
+计算由一系列称为超步 (Superstep) 的通过全局同步分开的计算步骤组成,
+采用块间同步处理, 块内异步并行的计算.
+并行任务按照超步组织, 接收来自上一个超步的消息, 执行本地计算并发送消息给下一个超步.
+每个超步包含了三个过程:
+\begin{compactitem}
+  \item 本地计算: 每个工作节点读取其本地数据异步地执行计算.
+  \item 消息通信: 
+  每个参与计算的工作节点将消息发给与之相连的其它工作节点以相互交换所需的数据.
+  \item 路障同步: 用于数据的全局同步，即块间同步，
+  每个工作节点在更新完自身的消息缓存并确一个超步.
+\end{compactitem}
+\subsubsection{GAS Model}
+GAS 模型具有更好的灵活性, 适应大多数图算法,
+并发任务间不需要数据同步过程, 每个并发任务在任意时刻都可以对全局参数进行读和更新,
+这提升了计算资源的利用率和整体任务的执行效率.
+但是仍有一定的缺陷: 假设某些任务由于硬件故障或者机器负载高,
+在迭代次数上严重滞后于其它任务, 则有可能使正确性无法得到完全保证.
+\begin{compactitem}
+  \item 以顶点为中心的 GAS, 可以 CSR/CSC 压缩, 可以快速地遍历顶点的边 (高效 Gather), 不需要原子操作.
+  数据预处理时, 对边集进行排序消耗可观; 
+  需要随机访问邻接节点, 当邻接节点不在内存时会产生磁盘随机访问.
+  \item 以边为中心的 GAS. 边集 E 远大于顶点集 V, 可以降低通信开销.
+  虽然可以处理无序边, 但无法压缩;
+  若多条边访问同一节点, 需要原子操作.
+  \item 以顶点为中心 GAS 计算模式适用于度高的顶点 (特别对于 Gather, 可以大量减少访存),
+  而以边为中心 GAS 计算模式适用于度低的顶点.
+\end{compactitem}
+
+\subsection{Schedule Timing}
+\subsubsection{Synchronous}
+Synchronous has these characteristics~\cite{DBLP:journals/csur/McCuneWM15}:
+\begin{compactitem}
+  \item almost always deterministic and simple.
+  \item distributed synchronous systems are along with message/batch passing communication.
+  \item straggler problem: synchronization imposes consistent overhead (barriers).
+  Each superstep takes as long as the \textbf{slowest} vertex.
+  \item synchronous algorithms may not converge in some instances.
+\end{compactitem}
+
+The bulk messaging at iteration boundaries can utilize the bandwidth
+efficiently if there is heavy communication between partitions.
+It is easy to program, debug, and deploy such systems,
+without concerns of distributed race conditions and deadlocks.
+Synchronous execution is suitable for balanced workloads that are computed symmetrically.
+The number of vertices involved in the computation increase,
+which means that the number of messages passing among them increase,
+this is suitable for a synchronous execution model (\textit{I/O bounded})
+~\cite{DBLP:journals/csur/HeidariSCB18}.
+
+This model is not suitable for unbalanced workloads
+in which computation converges asymmetrically.
+One slower worker which has not finished and
+hence delays all workers in the superstep.
+A synchronous execution model is ill-suited
+for applications and algorithms that need coordination between \textit{adjacent vertices},
+such as graph coloring algorithm
+(two adjacent vertices might pick conflicting colors frequently in this model)
+~\cite{DBLP:journals/csur/HeidariSCB18}.
+
+\subsubsection{Asynchronous}
+Asynchronous has these characteristics
+~\cite{DBLP:journals/csur/McCuneWM15}
+~\cite{DBLP:journals/csur/HeidariSCB18}:
+\begin{compactitem}
+  \item no explicit synchronization points, no straggler problem.
+  \item providing more execution flexibility by dynamic workloads.
+  \item many asynchronous models outperform corresponding synchronous models
+  (especially for imbalanced workload),
+  but more complex (scheduling logic and maintaining data consistency).
+  \item cannot take advantage of batch messaging optimizations.
+\end{compactitem}
+
+Asynchronous model addressed challenges of
+load balancing and long tail computation in the synchronous model.
+This approach is useful when the workload is imbalanced
+and \textit{convergence can occur faster} than synchronous approach.
+Async mode is designed for timely visibility of update,
+and emphasizes the fast convergence speed under sufficient hardware resources.
+
+The key disadvantage is that programming asynchronous processing systems
+is more difficult than synchronous systems.
+The programmer should deal with irregular communication intervals,
+unpredictable response time, complex error handling
+and more complicated scheduling issues
+~\cite{DBLP:journals/csur/HeidariSCB18}.
+
+Synchronous execution generally accommodates I/O-bound algorithms,
+while asynchronous execution well-serves CPU-bound algorithms
+~\cite{DBLP:journals/csur/McCuneWM15}~\cite{DBLP:journals/csur/HeidariSCB18}.
+Sync mode prefers execution stages at which there are a large number of active vertices
+and provides better scalability with the increase of graph size.
+Async mode has better performance on the stage of execution with less amount and fewer degree of active vertices than those of Sync mode,
+and provides better scalability with the increase of machines
+Async mode does not work well under heavy workload due to potentially heavy lock contention
+~\cite{DBLP:conf/ppopp/XieCGZC15}.
+Such as PageRank, where vertices are ``always active'' so messaging is high,
+synchronous execution has been shown to significantly outperform asynchronous execution
+
+\subsection{Graph Compression}
+Using gaps - instead of storing the successors,
+store the differences between adjacent successors.
+
+Graph reordering does better than graph partitioning
+when it comes to efficiency and graph compression.
+
+\subsection{Graph Partitioning}
+Given the common lack of structure of the computation,
+it becomes very challenging to find the right graph partitioning strategy
+that can maximize the locality of processing and achieve good load balancing.
+It's an NP-complete problem~\cite{DBLP:conf/spaa/AndreevR04}.
+
+METIS~\cite{DBLP:conf/icpp/KarypisK95} is a popular tool that uses multi-level partitioning.
+It performs high quality partitioning reducing communication (edge cuts) and imbalances.
+ParMETIS is a parallel MPI-based version of METIS
+that mitigates some of these performance limitations.
+
+Vertex-cut algorithms assign edges to partitions through vertices,
+whlie Edge-cut algorithms assign vertices to partitions through edges.
+
+In a k-way partitioning, the graph is partitioned into $K$ smaller parts of equal size
+while minimizing the edge cuts between partitions.
+
+Large adjacency list partitioning (LALP) from GPS~\cite{DBLP:conf/ssdbm/SalihogluW13}:
+Adjacency lists of high-degree vertices are not stored in a single worker,
+but rather are partitioned across workers.
+During execution, when u sends a message to all its neighbors,
+GPS intercepts the message and sends a single a message to each worker $W_j$,
+with $W_j$ delivering the message to all vertices in $N_j(u)$.
+
+Spinner~\cite{DBLP:conf/icde/MartellaLLS17} on top of Giraph
+and utilizes an \textit{iterative node migration} approach
+using a \textit{label propagation} algorithm to
+deal with scalability and changing partitions.
+\subsubsection{Dynamic Partitioning}
+According to GPS~\cite{DBLP:conf/ssdbm/SalihogluW13},
+three major questions should be answered in a dynamic repartitioning process:
+\begin{compactitem}
+  \item which nodes should be reallocated.
+  \item when and how to transfer the reallocated nodes to their new workers.
+  \item how to place the reallocated nodes.
+\end{compactitem}
+Some researchers have also shown that
+dynamic repartitioning does not offer significant performance improvements
+except under particular conditions.
+The vertices in a PageRank algorithm are always active,
+which makes dynamic repartitioning moot
+due to predictable and stationary load through the entire application’s lifetime
+~\cite{DBLP:journals/csur/HeidariSCB18}.
+\subsubsection{Vertex-Cut Partitioning}
+The degree distribution is skewed,
+balancing the number of vertices in each partition does not guarantee workload balance.
+Therefore, for natural graphs (that have power-law degree distribution),
+vertex-cut partitioning (edge-centric) approach can obtain better workload balance.
+
+Balanced graph partitioning is challenging:
+\begin{compactitem}
+  \item fewer partitions => load imbalance => low parallelism
+  \item Over partitioning => higher duplication factor => more work
+\end{compactitem}
+
+\subsection{Communication Model}
+\subsubsection{Message Passing}
+Information is sent from one vertex program kernel to another via a message.
+A message contains local vertex data and is addressed to the ID of the recipient vertex.
+Message passing is commonly implemented with synchronized execution,
+which guarantees data consistency and uses batch messaging to reduce high network bandwidth
+~\cite{DBLP:journals/csur/McCuneWM15}.
+\subsubsection{Shared Memory}
+Shared memory exposes vertex data as shared variables
+that can be directly read or be modified by other vertex programs.
+One disadvantage of distributed shared-memory frameworks is seen
+when computing on scale-free graphs, which have a certain percentage of high-degree vertices.
+The graph can be difficult to partition resulting in many ghost vertices.
+Vertex cuts and three-phase computation can overcome processing challenges
+like imbalances arising from high-degree vertices in scale-free graphs.
+
+Shared-memory systems are often implemented with asynchronous execution.
+Shared memory with asynchronous execution is an effective platform for dynamic computation,
+because the movement of data is separated from computation.
+Asynchronous sharedmemory systems can potentially outperform
+synchronous message-passing systems,
+though the latter often demonstrate better scalability and generalization
+~\cite{DBLP:journals/csur/McCuneWM15}.
+\subsubsection{Push/Pull Model}
+Push information to neighbors, write to state of others:
+Good when few vertices are active, but needs locks.
+Pull information from neighbors, write to own state:
+Good when many vertices are active, Locks can be avoided.
+Communication becomes redundant when neighboring vertices aren't active.
+
+Pushing entails more write conflicts that must be resolved with locks or atomics,
+traversals (BFS, SSSP) entail more read conflicts with pulling.
+Pulling reduces synchronization compared to pushing,
+pushing limits communication (e.g., the number of memory reads in BFS).
+~\cite{DBLP:conf/hpdc/BestaPGSH17}
+
+\subparagraph{Optimization} The number of excessive reads/writes can be reduced by
+accessing only a fraction of vertices in each iteration
+(the \textit{Frontier-Exploit} strategy)~\cite{DBLP:conf/hpdc/BestaPGSH17}.
+Delta-caching optimization is helpful for such case~\cite{DBLP:conf/osdi/GonzalezLGBG12}.
+An accumulator value is the result of the gather step.
+With delta-caching, a cached copy of the accumulator for each vertex is stored by the worker.
+For a given update with only minimal change ($\delta$),
+then neighboring vertices aren’t activated.
+Active-aware (number of active vertices) mode switching helps to limit the iteration count,
+use push mode when few active vertices while use pull mode when many active vertices.
+
+\begin{figure}
+  \begin{small}
+    \begin{center}
+      \includegraphics[width=0.95\textwidth]{figures/graph_atc17_everythinggraph1}
+    \end{center}
+    \caption{Everything in Graph Processing~\cite{DBLP:conf/usenix/MalicevicLZ17}}
+    \label{fig:everythinggraph1}
+  \end{small}
+\end{figure}
+\begin{figure}
+  \begin{small}
+    \begin{center}
+      \includegraphics[width=0.95\textwidth]{figures/graph_atc17_everythinggraph2}
+    \end{center}
+    \caption{Everything in Graph Processing System~\cite{DBLP:conf/usenix/MalicevicLZ17}}
+    \label{fig:everythinggraph2}
+  \end{small}
+\end{figure}
+
+\subsection{Optimization}
+\subsubsection{Communication}
+\begin{compactitem}
+  \item minimize communication overhead.
+  \item mirrors (edge cut/vertex cut/scatter vertex/combiner vertex)
+  of high-degree vertices placed into distributed machines (PowerGraph).
+  Large adjacency list partitioning (LALP) from GPS takes same idea.
+  Breaking up high-degree vertices reduces network communication
+  and helps to balance computation.
+  \item banlanced graph partition and workload.
+  \item subgraph-aware partition to get more information in an iteration (faster convergence)
+  and reduce message passing among different processing units.
+  \item synchronous batch messaging.
+  \item coalescing multiple into single one.
+  Sort the edges by destination vertex,
+  reduce unnecessary updates (writes) with FIFOs to these consecutive vertices.
+  \item use of batching when inserting and removing
+  from the inter-socket communication channel to amortize the locking overhead.
+  \item cut off NUMA communication.
+  \item use of a bitmap to mark the vertices during the visit.
+  \item FastForward queue (PPoPP'08).
+\end{compactitem}
+\subsubsection{Memory Locality}
+\begin{compactitem}
+  \item improve poor locality, such as
+  hierarchical networks, distributed,
+  shared and local caches, local and non-local memory,
+  and various cache-coherence effects.
+  \item high rate of requests
+  \item large bursts of requests
+  \item sequential access pattern
+  \item locality-aware vertices buffer.
+  \item reshape cache hierachy.
+  \item software prefetching (not very effect).
+  \item data redundancy for sequential accesses.
+  Store replicated values of source vertices in CSC array for pull model.
+\end{compactitem}
+\subsubsection{Parallelism}
+\begin{compactitem}
+  \item ILP: dataflow (pipelined Multiple Instructions Single Data (MISD) model).
+  \item MLP: HBM.
+  \item overlap communication and computation with multiple pipelines/boards.
+  \item different types of threads: computation/communication/parsing
+\end{compactitem}
+
+\subparagraph{ILP}
+vertex dependencies of graph can stall the pipelines
+and decrease the instruction level parallelism.
+How to reduce the impact arising from data dependencies
+remains an open problem for increasing the number of Instructions per Cycle (IPC).
+
+\subparagraph{MLP}
+Multi-bank, multi-port, optimizied memory access.
+The memory bandwidth utilization here means
+the valid values ratio per transfer.
+Random accesses in graph processing usually cause
+low ratio of valid values and result in much wasted bandwidth.
+Improving the memory bandwidth utilization can reduce the total number of memory accesses.
+
+\subsubsection{Storage}
+\begin{compactitem}
+  \item enhanced CSR/CSC.
+\end{compactitem}
+\subsubsection{Scheduling}
+\begin{compactitem}
+  \item asynchronous schedule timing.
+  \item work stealing.
+\end{compactitem}
+
+\subparagraph{Asynchronous}
+Asynchronous mode requires tremendous efforts
+to implement on graph accelerators for the sophisticated hardware design.
+\clearpage
+
+\section{CPU Graph Processing System}
+图计算框架核心问题:
+\begin{compactitem}
+  \item 任务划分与映射机制: TLP/DLP + mapping (programming/compiler/runtime).
+  \item 独立/统一内存地址空间.
+  \item 内存数据组织: 图数据结构(CSR/Grid)/NUMA 数据放置.
+  \item 并发控制与同步机制: BSP/Pull/Push/Dataflow.
+\end{compactitem}
+
+图计算特点:
+\begin{compactitem}
+  \item 规模巨大.
+  \item 访存密集 (intensive data access):
+  most of the operations in graph processing are related to data accesses.
+  \item 随机访存 (poor locality): high memory access overhead,
+  the high cache miss rates of graph processing make serial semantic a severe problem.
+  The predictors of modern processors can hardly provide satisfied performance for graph applications
+  The \textit{if} branch is complex because the condition result depends on specific graph structures.
+  \item 数据耦合 (high data dependency): make it difficult to
+  explore the parallelism and prefetch data (low ILP and DLP).
+  \item 非结构化 (irregular computation): poor workloads balance (power-law distribution).
+  \item 数据可能动态变化.
+  \item 计算过程频繁迭代.
+\end{compactitem}
+
+高能效的大规模图计算
+系统本质上主要包含两方面挑战:
+处理引擎, 如何高效地处理图数据;
+底层存储, 如何高效地存储和快速地访问图数据.
+
+控制流体系结构为主的现代计算机系统带来了访存局部性差, 并行流水执行效率低,
+内外存通道有限以及同步的扩展性差等一系列挑战.
+在内存带宽不足的情况下, 内存带宽是图数据处理任务的主要瓶颈.
+随着内存性能的逐渐提高和各种新型内存技术的出现,
+图计算本身的调度和同步开销将逐渐成为新的主要性能瓶颈.
+由于受到传统控制流体系结构的限制,
+现有方案在优化手段上较为单一而难以进一步提高图计算系统的性能.
+综上所述，为实现基于异构系统的图计算的``高性能, 可扩展, 易编程''目标,
+学术界和工业界还需要在异构平台图计算协同调度, 高效的数据管理机制,
+高度抽象且易用的异构图编程框架等关键技术方面进行进一步的研究和突破.
+
+\subsection{图计算系统分类}
+按架构分类:
+\begin{compactitem}
+  \item 单机: 指在单机上利用多核CPU, 大内存和多线程并行等进行大规模图计算.
+  这类系统通过减少磁盘随机写操作, 避免高昂的通信开销,
+  采用并行化技术来充分挖掘多核计算资源来处理大规模图数据,
+  在图的规模不是很大的情况下, 能在可接受的时间范围内完成任务,
+  达到与分布式大规模图计算系统相当的时间性能.
+  已有的主要单机图计算系统包括: GraphChi~\cite{DBLP:conf/osdi/KyrolaBG12},
+  X-Stream~\cite{DBLP:conf/sosp/RoyMZ13},
+  TurboGraph~\cite{DBLP:conf/kdd/HanLPL0KY13},
+  Ligra~\cite{DBLP:conf/ppopp/ShunB13},
+  Galois~\cite{DBLP:conf/sosp/NguyenLP13},
+  PathGraph~\cite{DBLP:conf/sc/YuanZXJLL14},
+  GRACE~\cite{DBLP:conf/cidr/WangXDG13}
+  FlashGraph~\cite{DBLP:conf/fast/ZhengMBVPS15},
+  GridGraph~\cite{DBLP:conf/usenix/ZhuHC15}.
+  \item 分布式: Pregel~\cite{DBLP:conf/sigmod/MalewiczABDHLC10},
+  GraphLab~\cite{DBLP:journals/pvldb/LowGKBGH12},
+  PowerGraph~\cite{DBLP:conf/osdi/GonzalezLGBG12},
+  Trinity~\cite{DBLP:conf/sigmod/ShaoWL13},
+  Pregelix~\cite{DBLP:journals/pvldb/BuBJCC14},
+  PowerLyra~\cite{DBLP:conf/eurosys/ChenSCC15},
+  PowerSwitch~\cite{DBLP:conf/ppopp/XieCGZC15},
+  Polymer~\cite{DBLP:conf/ppopp/ZhangCC15},
+  Gemini~\cite{DBLP:conf/osdi/ZhuCZM16}.
+\end{compactitem}
+
+\subsection{GraphChi}
+GraphChi~\cite{DBLP:conf/osdi/KyrolaBG12}具有以下特点:
+\begin{compactitem}
+  \item 以顶点为中心的 GAS 模型核外单机图计算系统.
+  \item 将连续顶点集划分为 P 个 interval， 每个 interval 对应一个 shard,
+  存储着所有入边 (即一个 shard 对应一个子图, 边以源点排序保存).
+  \item 利用 PSW (parallel sliding window) 每次访问一个 shard 中所有边与其他 shards 中的出边.
+  \item `input --(create shards)--> shards --(run algorithm)--> output`.
+  \item 尽管需要进行预处理 (创建 shards, 排序等), 但对于需要长期运行的系统而言, 这仅仅需要进行非常少的次数 (one time cost).
+  \item 通过 CSR + PSW 结合, 使得 Gather 阶段顺序访问节点的入边 (遍历所属 interval 的整个 shard)
+  Scatter 阶段顺序访问节点的出边 (由于 shard 内部按源点顺序排列, 所以只需遍历其他 interval 的部分 shard).
+\end{compactitem}
+\subsubsection{Shortcoming}
+\begin{compactitem}
+  \item 构建 shard 是需要对边按源顶点排序，这样耗费了大量的预处理时间，PWS 对计算密集型的算法更有利.
+  \item 另外在构建子图时出现大量的随机访存现象，通过顺序地更新子图内有共享边顶点来避免数据争用问题.
+  \item GraphChi 计算过程和磁盘 I/O 访问之间串行执行, 可以通过重叠这两部分进一步提升性能.
+\end{compactitem}
+
+\subsection{X-Stream}
+X-Stream~\cite{DBLP:conf/sosp/RoyMZ13}具有以下特点:
+\begin{compactitem}
+  \item 以边为中心的 GAS 模型核外单机图计算系统.
+  \item 将边划分为多个流式分区 (分区内无需排序), 顺序化地访问每个分区中的所有边.
+  \item 随机访问快速存储介质中的数据 (如顶点数据), 顺序访问慢速存储介质中的数据 (如边数据).
+  \item `input --(run algorithm)--> output`.
+  \item 没有预处理开销.
+\end{compactitem}
+\subsubsection{Shortcoming}
+\begin{compactitem}
+  \item X-Stream在计算过程中，每轮迭代产生的更新集非常庞大，接近于边的数量级.
+  \item 需要对更新集中的边进行 shuffle 操作.
+  \item 缺乏选择调度机制，产生了大量的无用计算.
+  \item X-Stream is not suitable for graphs and algorithms that require many iterations
+  ~\cite{DBLP:conf/sc/YuanZXJLL14}.
+\end{compactitem}
+
+\subsection{TurboGraph}
+TurboGraph~\cite{DBLP:conf/kdd/HanLPL0KY13}
+设计了一种页结构, 只需加载部分图结构, 基于 pin-and-slide 模型,
+设计了两种不同类型的线程, 即执行线程和回调线程,
+且执行线程和 I/O 回调线程可以并行处理, 从而提高了线程间的并行度,
+避免了迭代过程中大量中间结果访问磁盘开销,
+并利用固态硬盘实现磁盘读写和计算的并行化, 提高了图计算的整体性能。
+
+\subsection{Ligra}
+Ligra~\cite{DBLP:conf/ppopp/ShunB13} is built on
+the abstractions of edge maps and vertex maps
+with scatter-gather processing model.
+When applying these map functions,
+Ligra uses heuristics to determine in
+which direction to apply them (push/pull for sparse/dense EdgeMap)~\cite{DBLP:conf/sc/BeamerAP12}
+and what data structures to use (sparse or dense).
+These optimizations make Ligra especially well suited for low-diameter graphs.
+
+\subsection{Galois}
+Galois~\cite{DBLP:conf/sosp/NguyenLP13}
+are designed to handle irregular fine-grained task parallelism.
+Algorithms implemented in Galois
+are free to use autonomous scheduling (no synchronization barriers),
+which reduce the synchronization needed for high-diameter graphs.
+
+\subsection{GRACE}
+GRACE~\cite{DBLP:conf/cidr/WangXDG13}
+explores dynamic scheduling within a single superstep.
+GRACE exposes a programming interface (from within a given superstep)
+allows for prioritized execution of vertices and
+selective receiving of messages outside of the previous superstep.
+
+\subsection{PathGraph}
+PathGraph~\cite{DBLP:conf/sc/YuanZXJLL14}
+是一个采用路径中心计算模型的单机图计算系统, 通过构建前向边遍历树和后向边遍历树,
+将图算法的每次迭代计算分解为沿前向边遍历树更新数据和沿后向边遍历树收集消息的两步操作,
+which aims to leverage memory and disk locality
+on both out-of-core and in-memory graphs.
+
+The graph will be partitioned into paths
+including two forward and reverse edge traversal trees for each partition.
+It applies iterative computation per traversal tree partition in parallel,
+and then merges partitions by \textit{examining border vertices}.
+\textit{Gather} and \textit{Scatter} functions
+are used to traverse each tree by a user-defined algorithm.
+
+PathGraph implements a path-centric compact storage system
+that improves compactness and locality.
+Because most iterative graph algorithms involve path traversal,
+PathGraph stores edge-traversal trees in depth-first search order.
+Both the forward and reverse edge trees are
+each stored in a chunk storage structure that compresses data structure information
+including the adjacency set, vertex IDs, and the indexing of the chunk.
+
+The efficient computational model and storage structure of PathGraph
+resulted in improved graph loading time, lower memory footprint
+and faster runtime for certain algorithms.
+
+\subsection{FlashGraph}
+FlashGraph~\cite{DBLP:conf/fast/ZhengMBVPS15}
+是一个能在固态硬盘阵列上处理具有万亿节点的半外存的单机图计算系统.
+FlashGraph is deployed on top of the set-associative file system (SAFS).
+which includes a scalable lightweight page cache,
+and implements a custom asynchronous user-task I/O interface
+that reduces overhead for asynchronous I/O.
+FlashGraph employs asynchronous message-passing
+and vertex-centric programming with the semiexternal memory (SEM) model
+(where vertices and algorithmic state reside in RAM but edges are stored externally).
+
+\subsection{GridGraph}
+\subsubsection{Motivation}
+GridGraph~\cite{DBLP:conf/usenix/ZhuHC15} 是以边为中心的核外单机图计算系统,
+基于 X-Stream, 能否进行实时更新, 从而进一步减少 I/O 开销:
+将 scatter 阶段的顺序化写入与 gather 阶段的顺序化读出进行一定程度上地合并,
+即合并 updates 操作
+\subsubsection{Solution}
+\begin{compactitem}
+  \item 在进行流式分区时, 保证 scatter 阶段的源顶点与 gather 阶段的目的顶点的局部性 (使其位于同一个 streaming partion).
+  \item 利用 Grid Representation 可以达到这一目的:
+  两级结构的分区 (2-level hierarchical partitioning) + 双滑动窗口 (Dual sliding windows).
+\end{compactitem}
+\subsubsection{Grid Representation}
+\begin{compactitem}
+  \item 将顶点划分为 P 个相等的 chunks.
+  \item 将边划分为 P x P 个 blocks: 边源顶点所在的chunk决定其在网格中的行，边目的顶点所在的chunk决定其在网格中的列.
+\end{compactitem}
+第 n 行中的边的源顶点应为 chunk-n 中的顶点,
+第 n 列中的边的目的顶点应为 chunk-n 中的顶点: 第 (m, n) 个 block 中的边的源顶点应为 chunk-m 中的顶点,
+目的顶点应为 chunk-n 中的顶点
+\subsubsection{Dual Sliding Windows}
+\begin{compactitem}
+  \item 以列优先的顺序逐块遍历 edge blocks (自上至下, 自左至右).
+  \item 以列优先的顺序遍历时, 可以减少写带宽 (gather 阶段的 updates).
+\end{compactitem}
+\subsubsection{Selective Scheduling}
+跳过不具有活跃边的 blocks, 减少不必要的 I/O
+\subsubsection{2-Level Hierarchical Partitioning}
+将每个 Block 进行进一步的 Grid 划分
+\subsubsection{GridGraph Shortcoming}
+\begin{compactitem}
+  \item 折线式的边 block 遍历策略不能达到最大化的Cache/Memory命中率.
+\end{compactitem}
+
+\subsection{Mosaic}
+Mosaic~\cite{DBLP:conf/eurosys/MaassMKKKK17}
+(likes FlashGraph) stores only vertices in memory.
+It uses hilbert order tiles organization to improve locality.
+It uses pull-reduce-apply model (edge-centric model).
+It uses Xeon Phi coprocessor for:
+\begin{compactitem}
+  \item Parallelize SSD access
+  \item Parallelize edge processing
+  \item Parallelize vertex processing
+\end{compactitem}
+
+\subsection{MapReduce}
+MapReduce~\cite{DBLP:conf/osdi/DeanG04}
+has several limitations that make it less efficient
+for processing large graphs~\cite{DBLP:journals/csur/HeidariSCB18}:
+\begin{compactitem}
+  \item limited to a two-phased computational model.
+  \item limited tuple-based data structure.
+  \item input graph and internal state are not retained in main memory,
+  leading to \textit{poor I/O efficiency}.
+\end{compactitem}
+
+\subsection{Pregel}
+Pregel~\cite{DBLP:conf/sigmod/MalewiczABDHLC10}
+是一种基于 \textit{BSP} 模型, 以\textit{顶点为中心}的分布式图处理系统.
+BSP 模型是一种基于\textit{消息通信 (Message Passing) }的并行计算模型,
+
+计算由一系列称为超步 (Superstep) 的通过全局同步分开的计算步骤组成,
+采用块间同步处理, 块内异步并行的计算.
+并行任务按照超步组织, 接收来自上一个超步的消息, 执行本地计算并发送消息给下一个超步.
+每个超步包含了三个过程:
+\begin{compactitem}
+  \item 本地计算: 每个工作节点读取其本地数据异步地执行计算.
+  \item 消息通信: 
+  每个参与计算的工作节点将消息发给与之相连的其它工作节点以相互交换所需的数据.
+  \item 路障同步: 用于数据的全局同步，即块间同步，
+  每个工作节点在更新完自身的消息缓存并确一个超步.
+\end{compactitem}
+
+Pregel uses a master/workers model where
+the master node is responsible for coordinating synchronization at the superstep barriers
+while each worker independently invokes and executes the compute() function
+on the vertices of its assigned portion of the graph
+and maintains the message queue to receive messages from the vertices of other workers.
+
+Vertices do not have ID information of all of the other vertices,
+destination vertex IDs are typically obtained by iterating over outgoing edges
+For local machine, the worker process place the message
+directly into the vertex’s incoming message queue.
+For remote machine, the worker process looks up the worker ID of the destination vertex
+and places the message in an outgoing message buffer (\textit{batch messaging})
+(merge multiple messages into a single network sending).
+All messages sent during superstep S are received in superstep S + 1,
+at which point a vertex program can access the incoming message queue
+at the beginning of S + 1’s program execution.
+
+由于超步中每个节点上的本地计算的执行时间不等, 进度不统一, 
+全局路障同步将会导致大量节点进入等待状态, 形成快等慢的局面,
+进而产生``木桶效应'', 造成计算资源的浪费.
+Because vertices do not have ID information of all of the other vertices,
+destination vertex IDs are typically obtained by iterating over outgoing edges
+(visit all possible outgoing edges).
+这种方式的工作节点间的通信量较多, 也会加大时间开销.
+基于 BSP 模型的分布式图计算系统在处理具有幂率分布的图时效率较低.
+
+\subsection{GraphLab}
+GraphLab~\cite{DBLP:journals/pvldb/LowGKBGH12}
+是一种基于 \textit{GAS} 模型的 \textit{Shared Memory} 分布式图处理系统,
+对 BSP 模型进行进一步细化, 提高并行度.
+GraphLab offers two executionmodes: synchronous and asynchronous.
+其主要采用异步执行模式, 即可以使用相邻顶点或边中存储的最新数据来更新当前顶点状态.
+采用异步模式将不可避免的面临数据竞争问题, 例如:
+正在处理顶点 V 的函数需要访问邻接顶点,
+而邻接顶点此刻正在更新其状态;
+各自处理不同顶点的多个函数可能出现同时写共享数据.
+为了保证顺序一致性, 即所有的并行执行操作都有一个等价的顺序执行操作序列与之对应,
+从而确保并行执行与顺序执行都产生相同的结果.
+这就要求存在数据竞争的顶点之间需要按照一定的顺序串行执行,
+GraphLab 利用顶点着色、分布式锁等机制来确保存在竞态的顶点被顺序执行,
+而不存在竞态的顶点能够被并行执行.
+GraphLab automatically enforces serializability
+by preventing adjacent vertex programs from running concurrently
+by using a fine-grained locking protocol
+that requires sequentially grabbing locks on all neighbouring vertices.
+
+Border vertices are provided locally cached ghost copies of remote neighbors,
+where consistency between ghosts and the original vertex
+is maintained using pipelined distributed locking.
+GraphLab 将需要被处理的顶点置入集合 T, 从集合 T 中取出顶点进行处理,
+同时将 Receiver 从 T 中移出, 需要被处理的顶点又被动态地加入到集合 T 中.
+当集合 T 为空时, 执行结束.
+
+GraphLab’s asynchronous mode has poor scalability and performance
+due to communication overheads.
+
+\subsection{PowerGraph}
+PowerGraph~\cite{DBLP:conf/osdi/GonzalezLGBG12}
+基于 GAS 模式 (Pull to Dest, Apply to Dest, Backward to Src),
+利用``长尾''现象来优化子图划分, 尽可能地实现负载均衡和最小化通信与存储开销.
+其提出了顶点分割 (vertex-cut) 方案, 即对于度较高的顶点进行分割,
+分割开来的边被放置到不同的节点, 每个节点只需要维护被分割的顶点的镜像.
+Consistency across cached mirrors of the cut vertex
+is maintained using parallel Chandy-Misra locking.
+For distributed shared memory, the graph is cut along vertex C,
+where C1 is arbitrarily chosen as the master and C2 as the mirror.
+C2 compute a partial result based on local neighbors,
+the partial result is sent over the network from the mirror C2 to the master C1,
+the master computes the final result for the iteration.
+Such vertex cuts and three-phase computation can overcome processing challenges
+like imbalances arising from high-degree vertices in scale-free graphs.
+
+Delta-caching optimization is helpful for such case~\cite{DBLP:conf/osdi/GonzalezLGBG12}.
+An accumulator value is the result of the gather step.
+With delta-caching, a cached copy of the accumulator for each vertex is stored by the worker.
+For a given update with only minimal change ($\delta$),
+then neighboring vertices aren’t activated
+
+\subsection{Trinity}
+Trinity~\cite{DBLP:conf/sigmod/ShaoWL13} is amemory-based distributed system
+which focuses on optimizing memory and communication cost under the assumption
+that the whole graph is partitioned across a memory cloud.
+The memory cloud is essentially a distributed key-value store
+which is supported by a memory storage module and a message passing framework.
+Trinity organizes the memory of multiple machines into a globally addressable,
+distributed memory address space (a memory cloud) to support large graphs.
+
+A Trinity system consists of slaves, proxies, and clients,
+slaves to store data and perform computation,
+proxies to handle messages (not store data),
+clients for users to intreact with the Trinity cluster.
+
+Trinity is designed to support fast graph exploration
+as well as efficient parallel graph computations.
+
+\subsection{Preglix}
+Pregelix~\cite{DBLP:journals/pvldb/BuBJCC14}
+takes a novel set-oriented, iterative \textit{dataflow} approach
+to implementing the user-level Pregel programming model.
+It does so by treating the messages and vertex states
+in a Pregel computation like tuples with a well-defined schema;
+it then uses database-style query evaluation techniques to execute the user’s program.
+From a runtime perspective, Pregelix models Pregel’s semantics as a logical query plan
+and implements those semantics as an iterative dataflow of relational operators
+that treat message exchange as a join followed by a group-by operation
+that embeds functions that capture the user’s Pregel program.
+
+Pregelix has been developed to address three main challenges
+in distributed Pregel-like systems: (1)
+\begin{compactitem}
+  \item many Pregellike systems have limitations to support out-of-core vertex-storage.
+  \item existing Pregel-like systems have \textit{specific} strategies and implementations
+  for communication, node storage, message delivery.
+  A user cannot choose between different implementation strategies based on
+  what is better for a particular algorithm, dataset or cluster.
+  Pregelix improves physical flexibility and scalability of the processing system.
+  \item  Pregelix tries to leverage current data-parallel platforms to
+  streamline the implementation of Pregel-like systems.
+\end{compactitem}
+
+
+\subsection{PowerLyra}
+PowerLyra~\cite{DBLP:conf/eurosys/ChenSCC15}
+is a modification to PowerGraph that hybridizes partitioning
+where vertices with a degree above a user-defined threshold are cut,
+while vertices below the threshold are partitioned using
+an adaptation of the FENNEL streaming algorithm.
+
+\subsection{PowerSwitch}
+For some algorithms, one execution mode may outperform another
+only for certain stages of processing.
+Process begins with few active vertices,
+where asynchronous execution is advantageous,
+then propagates to a high number of active vertices performing lightweight computations,
+which is ideal for synchronous execution,
+before finally converging among few active vertices.
+
+Motivated by the necessity for execution mode dynamism,
+PowerSwitch~\cite{DBLP:conf/ppopp/XieCGZC15}
+can adaptively switch between synchronous and asynchronous execution modes.
+Developed on top of the PowerGraph platform,
+PowerSwitch can quickly and efficiently switch execution modes.
+PowerSwitch incorporates throughput heuristics with online sampling
+to predict which execution mode will perform better currently.
+
+PowerSwitch constantly collects execution statistics
+like throughput, active vertices and convergence speed,
+and leverages online sampling, offline profiling and a set of heuristics
+to accurately predict optimal mode switch points.
+
+\subsection{Polymer}
+Polymer~\cite{DBLP:conf/ppopp/ZhangCC15}
+is implemented for NUMA machines based on
+Ligra~\cite{DBLP:conf/ppopp/ShunB13} processing model.
+One approach is co-locating all edges with its source vertices to a single node.
+However, this will lead to excessive random remote accesses
+of application-defined data (such as rank) and runtime states.
+Hence, Polymer only co-locates edges with their target vertices in a NUMA node in the push mode.
+All other application-defined data and runtime states are stored together with its owning vertices.
+
+对于度数较⼩的顶点, 其边的信息存在源顶点所在的节点上;
+⽽对于度数较⼤的顶点, 其边的信息存到⽬标顶点所在的节点上.
+在做 Top-Down 计算的时候, 只要⼴播哪些⼤点在当前层的 Frontier 这个信息,
+就不再需要传输边了, 剩下的计算可以在本地完成.
+这样处理有如下优点:
+\begin{compactitem}
+  \item ⼩点的边集中存储, 便于快速处理
+  \item ⼤点的边分散存储, 解决了负载均衡问题
+  \item ⼤点虽然多了⼀步把数据发送到镜像, 但是由于⼤点数⽬较少, 并不会产⽣⼤量额外的开销
+\end{compactitem}
+
+\subsection{Gemini}
+Gemini~\cite{DBLP:conf/osdi/ZhuCZM16} major optimizations:
+\begin{compactitem}
+  \item efficiency: adaptive push-/pull-style computation.
+  \item efficiency: hierarchical chunk-based	partitioning.
+  \item scalability: locality-aware	chunking.
+  \item scalability: chunk-based work-stealing.
+\end{compactitem}
+
+Gemini organizes outgoing edges in the Compressed Sparse Row (CSR)
+and incoming ones in the Compressed Sparse Column (CSC) format.
+Gemini find that the basic CSR/CSC format is insufficient,
+the index array idx can become a scaling bottleneck.
+It use \textit{Bitmap Assisted Compressed Sparse Row}
+
+Bitmap Assisted Compressed Sparse Row:
+for sparse mode edges, we add an existence bitmap ext,
+which marks whether each vertex has outgoing edges in this partition.
+For example, only vertex 0, 2, and 4 are present,
+indicated by the bitmap 101010.
+
+Doubly Compressed Sparse Column: for dense mode edges,
+use a doubly compression scheme
+to store only vertices with incoming edges (vtx)
+and their corresponding edge offsets (off, where
+(off[i+1]-off[i]) indicates the number of local
+incoming edges vertex vtx[i] has).
+For example, only vertex 1, 2, 3, and 5 has local incoming edges.
+
+Sparse mode for push operations, dense mode for pull operations (locks-free).
+When it comes to distributed push/pull mode,
+masters	push message to mirrors, who update	their	local	neighbors.
+mirrors	pull updates from	neighbors, then	message	remote masters.
+
+Gemini considers both	vertex and edge:
+\begin{compactitem}
+  \item Edge:	the	amount of	work to	be processed.
+  \item Vertex:	the	processing speed of	work (locality).
+  \item Hybrid metric: $\alpha \cdot \vert V_i \vert + \vert E_i \vert$.
+\end{compactitem}
+
+Divide vertex	set into contiguous chunks.
+Chunk-based partitioning preserves locality.
+It's affordable	for preprocessing	when vertices	unordered.
+Per-node partition, per-socket partition, per-core work chunk
+(work partitioning within socket, mini-chunk for work-stealing).
+Gemini design a co-scheduling mechanism to
+overlap computation and inter-node communication tasks.
+\clearpage
+
+\section{GPU Graph Processing System}
+BFS on GPU~\cite{DBLP:conf/sc/LiuH15}
+\clearpage
+
+\section{FPGA Graph Processing System}
+\begin{compactitem}
+  \item cpu 通用.
+  \item gpu 高吞吐量.
+  \item fpga 低延迟.
+\end{compactitem}
+
+General purpose CPUs are not ideal for such data accesses:
+They have fixed memory access granularity based on cache line sizes,
+do not offer flexible high-degree parallelism,
+and their caches do not work effectively for irregular graph processing
+that have little or no temporal and spatial locality.
+GPUs offer massive parallelism
+while exhibit significantly reduced performance
+when the internal cores do not execute the same instruction,
+which is common in graphs with varying degrees
+~\cite{DBLP:journals/corr/abs-1903-06697}.
+
+As GraphBIG~\cite{DBLP:conf/sc/NaiXTKL15} mentioned,
+it is a common intuition that irregular data accesses
+are the major source of inefficiencies of graph computing:
+\begin{compactitem}
+  \item instruction fetch and branch prediction
+  are usually the key inefficiency sources.
+  a large number of ICache misses or branch miss predictions
+  can significantly affect architectural performance
+  (modern processors usually don’t incorporate efficient techniques
+  to hide ICache/branch re- lated penalties).
+  \item although typically DTLB (data TLB) is not an issue for conventional applications,
+  it is a significant source of inefficiencies for graph computing.
+  A high DTLB miss penalty is observed because of
+  the large memory footprint and low page locality.
+\end{compactitem}
+
+
+FPGA 比 CPU 和 GPU 能效高, 体系结构上的根本优势是无指令, 无需共享内存.
+缺少指令同时是 FPGA 的优势和软肋. 每做一点不同的事情, 就要占用一定的 FPGA 逻辑资源.
+如果要做的事情复杂或重复性不强, 就会占用大量的逻辑资源, 其中的大部分处于闲置状态.
+不管通信还是机器学习, 加密解密, 算法都是很复杂的,
+如果试图用 FPGA 完全取代 CPU, 势必会带来 FPGA 逻辑资源极大的浪费, 也会提高 FPGA 程序的开发成本.
+更实用的做法是 FPGA 和 CPU 协同工作, 局部性和重复性强的归 FPGA, 复杂的归 CPU
+~\cite{DBLP:conf/isca/Putnam14}.
+
+CPU 可以通过 PCIe 总线与 FPGA 直接通信, 无需通过基于共享内存（FPGA 片上内存）的批处理模式.
+通过 OpenCL 写 DRAM, 启动 kernel, 读 DRAM 一个来回, 需要 1.8 毫秒.
+而通过 PCIe DMA 来通信, 却只要 1~2 微秒.
+
+在数据中心里 FPGA 的主要优势是稳定又极低的延迟, 适用于流式的计算密集型任务 (低延迟) 和通信密集型任务.
+FPGA 定义为通信的\textbf{大管家}, 不管是服务器跟服务器之间的通信, 虚拟机跟虚拟机之间的通信,
+进程跟进程之间的通信, CPU 跟存储设备之间的通信, 都可以用 FPGA 来加速.
+从第一代装满 FPGA 的专用服务器集群, 到第二代通过专网连接的 FPGA 加速卡集群 (8x6),
+到目前复用数据中心网络的大规模 FPGA 云 (FPGA 部署在网卡和交换机之间).
+
+Massive parallelism can be easily achieved when these resources are in good use.
+For improving the locality of vertices on the BRAM,
+fine grained partitioning and dedicated data placement strategies
+are needed to increase the reuse rate of vertices on the BRAM.
+
+By exploiting massive parallelism, typically in the form of deep pipelines,
+arbitrarily complex computations can be implemented as a pipeline
+that can produce one result per cycle.
+
+\subsection{FPGA Architecture}
+Configurable logic blocks include lookup tables (LUTs) to implement combinatorial logic,
+flip-flops to implement registers, and a programmable interconnect.
+
+Xilinx UltraScale+ devices add a new class of on-chip RAM called UltraRAM,
+that expose access ports of similar width to traditional block RAM,
+but have larger capacity, allowing large amounts of memory to be stored on the chip
+without requiring as many individual RAM blocks to be combined.
+\subsubsection{insufficient Bandwidth}
+\begin{compactitem}
+  \item irregular memory access pattern and random accesses to off-chip memory
+  \item memory-bound graph algorithms
+\end{compactitem}
+
+\subsubsection{Limited Resources}
+BRAM and PLE.
+\subsubsection{Limited Frequency}
+
+\subsection{GraphStep}
+GraphStep~\cite{DBLP:conf/fccm/DeLorimierKMRERUKD06}
+is one of the first approaches to design a generic FPGA architecture.
+It based on \textit{vertex-centric} model.
+The computation associated with each vertex is divided into several steps,
+these steps are \textit{synchronized} across all the vertices.
+
+Each receives input messages from neighbors,
+then awaits the synchronization barrier,
+thirdly updates its state,
+finally sends messages to neighbors.
+
+High-degree vertices are decomposed into
+multiple vertices with smaller degrees to avoid bottlenecks.
+For larger graphs that do not fit the on-chip memory (BRAM),
+GraphStep distributes the data among multiple FPGAs with Butterfly routing networks.
+The problem with GraphStep is that it keeps the entire graph inside the on-board DRAM
+that limits the scalability of the system remarkably.
+
+\subsection{GraphGen}
+GraphGen~\cite{DBLP:conf/fccm/NurvitadhiWWHNH14}
+is a generic vertex-centric FPGA-based graph processing framework.
+It has been designed to get vertex-centric specifications
+and create FPGA implementations for targeted platforms.
+The main focus is on enabling developers to program graph applications
+on hardware accelerators without requiring any knowledge about the specific platform
+(Graph\textbf{Gen} - Graph Generator).
+
+GraphGen allows to store graph data in DRAM,
+thus enabling the processing of much larger graphs that would otherwise not fit in BRAM.
+The compiler generates an FPGA program for each subgraph,
+The compilation procedure is thus dependent
+on both the graph algorithm and the graph data
+(need to re-compilation for changed data set or algorithm).
+
+The framework applies several additional optimizations to reduce the bandwidth usage:
+\begin{compactitem}
+  \item double buffering is used to prevent stalls while waiting for new data.
+  \item edges are sorted according to the order in which they are accessed
+  (memory access requests can be coalesced).
+  \item pipelining is used in the processing elements to achieve high clock rates.
+\end{compactitem}
+
+\subsection{GraphOps}
+GraphOps~\cite{DBLP:conf/fpga/OguntebiO16}
+is a \textit{vertex-centric} \textit{pull-based} graph processing framework.
+which provide a set of building blocks from which graph algorithms can be composed.
+These blocks are then placed on the FPGA and connected together,
+such as
+ForAllPropRdr
+(fetches the vertex properties of all the neighbors of a vertex from memory to the FPGA),
+NbrPropRed
+(performs a customized reduction on the vertex properties of a neighborhood),
+ElemUpdate
+(writes the updated value of a vertex back to memory)
+and control-flow blocks
+to implement PageRank and other algorithms.
+
+The authors implement a range of different graph algorithms
+to illustrate the flexibility of GraphOps.
+Instead of storing the properties of vertices as an array of size $n$,
+the property values are replicated for every single incoming edge
+to read source value sequentially in pull manner.
+In their evaluation, they conclude that the bottleneck for all implementations
+is the memory bandwidth between FPGA and DRAM.
+The authors conclude that performance of GraphOps
+corresponds to only $1/6$ of the theoretically available throughput.
+
+First, GraphOps does not describe how to implement multiple parallel pipelines.
+Second, data that is fetched from memory is only used to update a single vertex,
+but never reused among multiple vertices (Such reuse optimization could potentially
+lower the communication costs and thus improve the performance).
+Third, multiple blocks can issue memory read or write requests simultaneously,
+the memory channel needs to serve different memory interfaces.
+Neighborhoods are not accessed in the order in which they are stored in memory,
+leads to a large number of random memory requests which \textbf{place an even harder burden on the memory bandwidth}.
+
+\subsection{GraVF}
+GraVF~\cite{DBLP:conf/fpl/EngelhardtS16} is based on the BSP model (\textit{vertex-centeric}).
+In each superstep,
+the Apply function defines how a vertex property is updated based on the incoming messages
+and the Scatter function defines which messages are sent to the vertex neighbors.
+The synchronization step is implemented with floating barrier scheme
+(see also \S~\ref{ssub:floating barrier scheme}).
+All vertices and edges are stored on the FPGA,
+limiting the size of graphs that can be processed by the framework.
+
+\subsection{FPGP}
+FPGP~\cite{DBLP:conf/fpga/DaiCWY16} is a \textit{edge-centeric} framework
+that uses \textit{intervals and shards} to improve locality of processed graphs
+and store only the \textit{currently relevant} graph partitions in BRAM.
+A shard is further divided into sub-shards, based on the source vertex of the edges.
+Edges inside each sub-shard are then sorted by their destination vertex
+(resembles GraphChi~\cite{DBLP:conf/osdi/KyrolaBG12}).
+While the edges are streamed from memory shard by shard,
+the vertices are computed interval by interval.
+
+The FPGP framework enables the user to express different graph algorithms
+by only implementing \textit{the kernel function},
+which is executed for \textit{each edge} by dedicated processing units.
+For every sub-shard $S_{i,j}$,
+the properties of the vertices in interval $i$ are loaded to the FPGA
+and the kernel function is performed for every edge in the sub-shard.
+After the whole shard is processed,
+the updated interval $I_j$ is stored back to the shared memory
+and the next interval is loaded to BRAM.
+The entire source property array is being loaded $\frac{n}{M_{BRAM}}$ times,
+the total communication cost for reading vertex properties is in $O(n^2)$.
+
+In FPGP, there is a Shared-Vertex Memory (SVM) connected to all FPGAs.
+Such implementation limits the scalability to multi-FPGA
+because the total bandwidth of SVM is limited.
+Although it has been shown that FPGP
+does not perform as good as CPU-based single server frameworks,
+it shows the mechanism of FPGA-based generic graph processing systems well.
+
+\subsection{ForeGraph}
+ForeGraph~\cite{DBLP:conf/fpga/DaiHCXWY17}
+adopts \textbf{Grid} (with sub-blocks)
+data layout into distributed FPGA boards:
+\begin{compactitem}
+  \item use BRAM as vertex buffer (source/destination).
+  \item hash-based vertex partitioning.
+  \item vertex index compression: reduce data szie.
+  \item shuffle edges to fully utilize all PEs, reduce IDLE PEs.
+  Avoid the case that few PEs are overburdened,
+  while others are idle waiting edges.
+  \item selective scheduling (skip useless/inactive blocks):
+  load fewer edges from the off-chip memory and
+  skip (sub-) blocks which are unnecessary to be transmitted.
+\end{compactitem}
+
+\subsection{ExtraV}
+Graph Virtualization is a technique proposed by ExtraV~\cite{DBLP:journals/pvldb/LeeKYCHNNJ17}.
+Use the accelerator to offload tasks related with
+graph decompression and filtering from the host processor.
+They achieve compression ratios between 1.9 and 9.36,
+where the highest compression rates are obtained for web graphs.
+
+\subsection{Hardware transactional Memory}
+An architecture that consists of many lightweight multi-threaded processing engines,
+a global transactional shared memory, and a work scheduler~\cite{DBLP:conf/fpga/MaZC17}.
+
+\subsection{AccuGraph}
+As Yao~\cite{DBLP:conf/icdcs/JinYLZL17} mentioned,
+low ILP resulting from heavy dependencies,
+serial semantic in instruction stream,
+and high branch misprediction caused by complex
+branch instructions are the major reasons responsible
+for the inefficiencies inside core towards graph applications.
+
+Dataflow could provide high parallelism by
+removing redundant dependencies (like control dependencies) and serial semantic,
+and could provide an opportunity to reduce the misprediction costs.
+Just because of the pros of dataflow paradigm
+in the fundamental enhancement on ILP and branch prediction for graph processing,
+applying a dataflow approach in graph processing is useful.
+
+AccuGraph~\cite{DBLP:conf/IEEEpact/Yao0L0H18}
+is a novel graph-specific accelerator
+that can simultaneously process atomic vertex updates for massive parallelism
+while ensuring the correctness.
+Based on simple and repeated atomic operations following the commutative and associative law,
+trying to tackle sparse power-law graphs
+(low parallelism fow low-degree vertices
+and high synchronization overheads for high-degree vertices)
+and random access to vertices and edges,
+a \textit{parallel accumulator} is designed to remove the serialization in atomic protections
+for conflicting vertex updates through merging their results in parallel.
+
+\subsection{FabGraph}
+FabGraph~\cite{DBLP:conf/fpga/ShaoLHL019}
+only needs to slide the window
+to cover the upper-triangular part or lowertriangular part of the grid,
+reduceing data transmission.
+
+FabGraph adopts hash-based vertex partitioning.
+
+FabGraph adopts two-level vertex caching,
+L1 vertex caches attached to pipeline sets,
+L2 vertex caches as shared vertex buffer.
+All vertex caches use BRAM.
+
+FabGraph use 2 pipeline sets to overlap
+communication and computation,
+enhancing bandwidth of graph progressing.
+
+\subsection{Convey HC-1}
+This system~\cite{DBLP:conf/asap/BetkaouiWTL12}
+decouples computation and communication
+while keeping multiple memory requests in flight at any given time.
+The performance increases as the graph size increases
+in terms of vertex count and average vertex degree.
+In contrast, the BFS performance of cache-based systems,
+tends to decrease as the graph size is scaled up
+due to the increased rate of last-level cache misses.
+It shows that the CPU-based systems try to hide memory latency using cache memories,
+which is ineffective for random and irregular memory access patterns.
+
+\subsection{CyGraph}
+CyGraph~\cite{DBLP:conf/ipps/AttiaJTJZ14}
+targets to BFS algorithm:
+\begin{compactitem}
+  \item use special CSR data layout.
+  \item design optimized BFS algorithm targeting special CSR layout,
+  cuts down the number of external memory requests by least 50\%.
+\end{compactitem}
+
+The main idea by CyGraph is to use a \textit{custom graph representation}
+to reduce the memory bandwidth usage in their BFS design.
+In another optimization, instead of pushing vertex to the frontier queue,
+CyGraph propose to push the value row since only this value is needed in the subsequent iterationk.
+All these optimizations improve \textit{spatial locality}
+and \textit{reduce the amount of data} that has to be read from DRAM.
+
+For each CSR row offset element, $R[i]$,
+use the least significant bit of the row index as a visited flag
+(0 as not vistied)
+The remaining bits of $R[i]$ are used as follows:
+\begin{compactitem}
+  \item if node i is visited,
+  the LSB of $R[i]$ will equal 1
+  and the remaining bits will be used for node level.
+  \item if node i is not visited,
+  the MSB bits from 63 to 32 will be used as row index
+  and the bits from 31 to 1 as neighbors count.
+\end{compactitem}
+
+CyGraph kernel as a pipeline of four stages.
+Pipeline stages are separated by a FIFO queues.
+In order to find out when the kernel finishes processing,
+every process counts all items it reads and writes.
+The kernel finishes when all of its processes
+are terminated successfully and all the FIFO queues are empty.
+
+Graphs get more sparse, CyGraph obtains higher speedups
+and comes quite close to its peak performance.
+
+\subsection{FPGA-CPU BFS Case}
+Author~\cite{DBLP:conf/fpl/UmurogluMJ15}
+use algebra abstraction for BFS algorithm,
+and split distance calculation to a separate stage.
+
+\subsection{Hybrid Push-Pull BFS Case}
+Zhou~\cite{DBLP:conf/fccm/ZhouCP16} based on X-Stream~\cite{DBLP:conf/sosp/RoyMZ13},
+proposed a \textit{edge-centric} graph processing framework,
+with \textit{Scatter-Gather} model:
+\begin{compactitem}
+  \item the authors propose to sort the edges inside each partition by their destination vertex.
+  Thus, updates to the same row in DRAM happen consecutively.
+  Since now updates that target the same destination vertex are processed consecutively,
+  unnecessary updates can be reduced on the FPGA before being stored to DRAM.
+  \item the authors implement a combining network which reduces concurrently processed updates
+  in case they have the same destination.
+  \item they implement a hybrid approach that \textit{dynamically switches}
+  between push and pull paradigms based on the number of vertices in the frontier~\cite{DBLP:conf/sbac-pad/ZhouP17}.
+  \item to lower power consumption, the authors temporarily deactivate BRAM modules
+  through the \textit{enable} port when they are not needed.
+\end{compactitem}
+
+\subsection{FPGA-HMC BFS Case}
+Benefits for graph processing on FPGA coming from HMCs are due to
+~\cite{DBLP:conf/fpga/ZhangKL17}
+~\cite{DBLP:conf/fpga/ZhangL18}
+~\cite{DBLP:conf/fpga/KhoramZSL18}:
+\begin{compactitem}
+  \item the HMC substantial bandwidth improvement over traditional DRAM.
+  \item optimized parallel random memory access.
+  \item in-memory locking and atomic operations.
+\end{compactitem}
+\subsubsection{FPGA-HMC 2017 Case}
+The authors~\cite{DBLP:conf/fpga/ZhangKL17}
+implement BFS in a framework based on the MapReduce paradigm.
+Mapper modules read the current frontier of the BFS and extract the adjacency lists of those vertices.
+Reducer modules then update the parents of the newly visited vertices and store them in the new frontier.
+The used HMC module had a limited capacity of 4GB, limiting the size of used graphs.
+
+HMC allows to select the size of the transferred data payload
+to be anything between 16 bytes and 128 bytes.
+Reading a list of neighbors in a BFS traversal has better data locality
+than updating the parent of a single vertex.
+Thus, the main insight is that \textit{different payload sizes}
+for accessing different data structures in BFS can be used to optimize performance.
+Best read performance for reading bitmap, vertex, and adjacency analysis
+is achieved when larger read granularity is used.
+Conversely, write operations favor smaller granularity of accesses.
+The only exception happens when reading the level array,
+since this read also has low locality,
+
+A two-level bitmap design is proposed to eliminate unnecessary HMC accesses
+by leveraging the sparsity of the graph,
+due to only a small part of bitmap contains useful information.
+Second small bitmap (an \textit{OR} reduction of k entries in the larger bitmap)
+is use for smaller frontiers in early and last iteration.
+The frontiers are stored as bitmaps in the main memory.
+To increase performance, the on-chip first level bitmap should
+represent the off-chip second level bitmap in a more fine-grained manner.
+
+To accelerate the development process and facilitate evaluation of optimization methods,
+the authors develop an event-based HMC simulator.
+They compile their CPU implementation using gcc with
+flags \textbf{-Ofast} and \textbf{-march=native} for runtime optimization.
+\subsubsection{FPGA-HMC 2018 Case}
+The authors~\cite{DBLP:conf/fpga/ZhangL18}
+developed two algorithm optimization techniques
+for \textit{hybrid top-down and bottom-up} BFS two way algorithm~\cite{DBLP:conf/sc/BeamerAP12}:
+degree-aware adjacency list reordering and degree-aware vertex index sorting.
+The former can reduce the number of redundant edge checks in the bottom-up method,
+while the latter can create a strong correlation between vertex index and data access frequency.
+
+By leveraging the correlation between vertex index and data access frequency
+made by degree-aware vertex index sorting,
+they further developed two platform-dependent hardware optimization techniques,
+namely degree-aware data placement and degree-aware adjacency list compression.
+Store the vertices with the highest degree in the register file,
+2049 to 65536 in BRAM, the rest in external HMC.
+Exponential-Golomb coding is applied to compress the adjacency list.
+These two techniques reduce the amount of access to external memory.
+
+\clearpage
+
+\section{ASIC}
+\subsection{Tesseract}
+Tesseract~\cite{DBLP:conf/isca/AhnHYMC15}其是一个由 16 个立方构成的立方网络.
+每个立方是一个混合内存立方体(HMC, Hybrid Memory Cube), 具有 512 GB/s 内部内存带宽.
+每个混合内存立方体由 32 个垂直切片构成, 将每个垂直切片称为一个 vault, 多个 vault 间通过交叉开关网络连接.
+每个 vault 包含一个 16 个块的 DRAM 分区, 一个专用内存控制和一个轻量级通用处理器.
+Tesseract 具有 8 TB/s (16 x 512 GB/s) 内部内存带宽, 具有 16 x 32 = 512 个通用处理器.
+在开始处理图数据前, 按照一定的划分规则将图数据划分为 512 个子图, 每个 vault 对应一个子图.
+
+\subsection{EEAGAA}
+EEAGAA~\cite{DBLP:conf/isca/OzdalYKAGBO16} 采用以顶点为中心计算模式,
+并采用行压缩 (CSR) 格式来表示图数据, 在执行图算法时, 遵循 GAS 模型, 并支持异步执行模式.
+其内部包括片上缓存、访存请求处理、活跃顶点列表管理、运行时管理部件、
+信息收集计算部件、顶点状态更新计算部件、信息扩散计算部件和同步部件.
+
+\subsection{Graphicionado}
+Graphicionado~\cite{DBLP:conf/micro/HamWSSM16}
+是一个采用以边为中心, 遵循同步执行模式的图计算加速器,
+其指出当前的通用处理器不是进行图数据处理的理想平台，主要原因包
+括：
+\begin{compactitem}
+  \item 访存粒度过大, 导致片外访存带宽被浪费.
+  通用处理器从内存载入或存储数据的粒度是缓存行,
+  一个缓存行的大小一般为 64 字节, 而图算法访问数据的粒度一般为 4 字节.
+  \item 低效的片上缓存使用. 通用处理器不能有效地将局部性高的数据存储于片上缓存中.
+  \item 不匹配的执行粒度. 通用处理器使用指令来完成计算和访存操作,
+  对很多图算法, 绝大部分指令主要用于供给数据和移动数据, 其能效差.
+\end{compactitem}
+其建立了片上存储用于存储顶点信息, 同时降低访存粒度, 设计硬件专用流水线进行图计算.
+
+\subsection{GraphPIM}
+By offload the atomic operations on the graph property to the PIM side,
+GraphPIM~\cite{DBLP:conf/hpca/NaiHSKKK17}
+avoids the overhead of performing the atomic operations in the host processor
+and the inefficient utilization of the memory subsystem caused by \textit{irregular data accesses}.
+
+However, it needs to incorporate with specialized memory architecture
+and also increases the memory requests since all atomic operations need to be sent to the memory.
+
+\subsection{GraphR}
+GraphR~\cite{DBLP:conf/hpca/SongZQLC18}
+is the first ReRAM-based graph processing accelerator.
+The core graph computations are performed in sparse matrix format in GEs (ReRAM crossbars).
+
+\subsection{GraphP}
+GraphP~\cite{DBLP:conf/hpca/ZhangZWGWCKQ18}
+takes source-cut graph partition and two-phase vertex model,
+reduces inter-cube communication compare to
+Tesseract~\cite{DBLP:conf/isca/AhnHYMC15} and GraphPIM~\cite{DBLP:conf/hpca/NaiHSKKK17}.
+
+\clearpage
+
+\section{DRAM}
+Core (核) 代表一个独立的 CPU, Socket (颗) 本意是插槽,
+代表一个主板上的芯片, 多核架构就是在一个芯片上放多个处理器,
+2颗4核, 代表主板上有 2 个芯片插槽, 每个芯片上存在 4 个 CPU, 所以有 8 个物理 CPU,
+如果存在超线程, 还可能多出 8 个逻辑 CPU, 总共 16 个逻辑 CPU.
+一个逻辑 CPU（LCPU）能运行一个进程或线程, 如果每核能执行 2 个或更多的线程,
+那么一定使用了超线程技术, 否则每一核就只能运行一个线程或进程.
+
+SRAM 容量太难做大, CPU 一半以上的面积都用来做 SRAM.
+SRAM 面积越大, 速度就越慢.
+SRAM 做到 GB 容量几乎是不可能完成的任务.
+
+\subsection{Basis of DRAM}
+\subsubsection{Terminology}
+\begin{compactitem}
+  \item RAS: Row Address Strobe (ACT Activate DRAM page/row Command).
+  \item CAS: Column Address Strobe (READ Command).
+  \item DDR: Double-Data Rate transfers data
+  on both rising and falling edge of the clock.
+  \item Channel: 一组数据信号线、对应几个槽位、对应几根内存条称为一个 channel.
+  \item Bank: read out all words in parallel, 一个 bank 包含 N 个 DRAM Subarray (N*row*col*1bit).
+  \item DIMM: Dual Inline Memory Module 双通道内存.
+  \item channel＞DIMM＞rank＞chip＞bank＞row/column.
+\end{compactitem}
+\subsubsection{Address Mapping Scheme}
+如表~\ref{tab:dram_address_mapping}所示,
+$\text{Memory Capacity} = K*L*B*R*C*V$,
+$N = CV/Z$, $CV = NZ$.
+采用 open page (keep page in DRAM row buffer) 时,
+映射为 k:l:r:b:n:z (可扩展) /r:l:b:n:k:z (高并行) (n 也等于 column, z 也等于 offset).
+采用 close page (immediately close page in DRAM row buffer) 时,
+映射为 k:l:r:n:b:z/r:n:l:b:k:z.
+Accessing different rows from one bank is slowest.
+\begin{table}
+  \begin{small}
+    \caption{DRAM Address Mapping Parameters}
+    \label{tab:dram_address_mapping}
+    \begin{center}
+      \begin{tabular}[c]{l|l}
+        \hline
+        \multicolumn{1}{c|}{\textbf{Symbol}} & 
+        \multicolumn{1}{c}{\textbf{Description}} \\
+        \hline
+        K & \# of channels in system \\
+        L & \# of ranks per channel \\
+        B & \# of banks per rank \\
+        R & \# of rows per bank \\
+        C & \# of columns per row \\
+        V & \# of bytes per column \\
+        Z & \# of bytes per cache line \\
+        N & \# of cache lines per row \\
+        \hline
+      \end{tabular}
+    \end{center}
+  \end{small}
+\end{table}
+\subsubsection{Delay Time}
+一条访存指令发到内存控制器, 它的访存延时是存在不同的可能性:
+\begin{compactitem}
+  \item row buffer hit: 从 row buffer 到把数据放在数据总线上的时延，大约 20 ns.
+  \item empty row buffer: 从电容到 sense amplifier 再到 row buffer 的时序 + 从 row buffer 到数据总线时间，大约40ns.
+  \item row buffer conflict: 写回时延 + empty row buffer delay, 大约60ns.
+  \item CL: CAS Latency, 从 CAS 与读取命令发出到第一笔数据输出的这段时间 (READ -> data).
+  \item tRCD: RAS 到 CAS 时延 (Active -> READ).
+  \item 要切换另一行，要发 precharge 命令 (close page/row), 把数据写到 cell 里去.
+  关闭一个行需要时间, 这个时间称为 tRP, 发送 PRE/PREA 命令后 tRP 时间才可以发 ACT 命令.
+\end{compactitem}
+
+\subsection{Memory Controller}
+来自 CPU 的请求以执行顺序进入 transaction queue,
+这些请求被转换为 DRAM 命令并放入 command queue.
+
+Commonly used scheduling policy (FR-FCFS):
+\begin{compactitem}
+  \item row hit first: serve row hit memory (address target to row buffer) accesses first.
+  Apps with high row buffer locality unfairly prioritize.
+  \item oldest first: then serve older accesses first
+  Memory-intensive applications unfairly prioritize.
+\end{compactitem}
+
+
+\subsection{Landscape of DRAM-based memory}
+\begin{table}
+  \begin{small}
+    \caption{Landspace of DRAM-based memory~\cite{DBLP:journals/cal/KimYM16}}
+    \label{tab:memory_landscape}
+    \begin{center}
+      \begin{tabular}[c]{l|l}
+        \hline
+        \multicolumn{1}{c|}{\textbf{Segment}} & 
+        \multicolumn{1}{c}{\textbf{DRAM Standards \& Architectures}} \\
+        \hline
+        Commodity & DDR3;DDR4 \\
+        Low-Power & LPDDR3;LPDDR4 \\
+        Graphics & GDDR5 \\
+        Performance & eDRAM;RLDRAM3;WIO;WIO2;MCDRAM \\
+        3D-Stakced & HBM;HMC;SBA/SSA;Staged Reads;RAIDR \\
+        Academic & SALP/SARP;AL/TL-DRAM;RowClone;Half-DRAM;Row-Buffer Decoupling \\
+        \hline
+      \end{tabular}
+    \end{center}
+  \end{small}
+\end{table}
+
+\subsection{Memory Security}
+\subsubsection{Row Hammer}
+repeatedly opening and closing a row enough times within a refresh interval
+induces disturbance errors in adjacent rows in most real DRAM chips:
+\begin{compactitem}
+  \item DRAM cells are too close to each other (not electrically isolated from each other)
+  \item access to one cell affects the value in nearby cells due to electrical interference
+  \item induce bit flips in page table entries (PTEs) and gain read-write access to all of physical memory
+\end{compactitem}
+
+some potential solutions:
+\begin{compactitem}
+  \item better DRAM chips (cost)
+  \item higher memory refresh rates (power, performance)
+  \item sophisticated error correction (power, cost)
+  \item access counters (power, cost, complexity)
+\end{compactitem}
+
+\subsection{Simulator}
+\subsubsection{MacSim}
+\href{https://github.com/gthparch/macsim}{SST + MacSim}
+\subsubsection{DRAMSim2}
+\begin{compactitem}
+  \item \textit{AddressMapping.cpp}: 物理地址到内存 (rank/bank/row/col/offset) 的映射关系.
+  \item \textit{TraceBasedSim.cpp}: trace file (.trc) 相关代码.
+\end{compactitem}
+
+\subsection{HBM}
+\label{sub:HBM}
+\subsubsection{AXI}
+AXI协议是基于 burst 的传输,
+并且定义了以下5个独立的传输通道:
+读地址通道、读数据通道、写地址通道、写数据通道、写响应通道.
+地址通道携带控制消息用于描述被传输的数据属性,
+数据传输使用写通道来实现``主''到``从''的传输,
+``从''使用写响应通道来完成一次写传输;
+读通道用来实现数据从``从''到``主''的传输.
+
+The AXI (Advanced eXtensible Interface) protocol
+includes AXI ID transaction identifiers.
+A master can use these to identify separate transactions that must be returned in order.
+All transactions with a given AXI ID value must remain ordered,
+but there is no restriction on the ordering of transactions with \textit{different ID} values.
+This means a single physical port can support out-of-order transactions
+by acting as a number of logical ports,
+each of which handles its transactions in order.
+
+% subsection HBM (end)
+\clearpage
+
+\section{Synchronization}
+SSYNC~\cite{DBLP:conf/sosp/DavidGT13} claimed that
+``good synchronization'' in software might \textbf{not scale as expected} due to hardware.
+SSYNC provided a comprehensive analysis on two dimension:
+hardware processors and synchronization layers.
+Hardware processors included single-sockets and multi-sockets.
+Synchronization layers included cache coherence (load and store),
+atomic operations (CAS), software primitives (locks)
+and systems/applications (hash table).
+It showed some useful conclusions:
+\begin{compactitem}
+  \item scalability of synchronization is key to application scalability.
+  \item synchronization crossing sockets is a performance killer.
+  \item sharing within a socket is necessary but not sufficient
+  due to hardware provide you with the expect expensive in any case.
+  Incomplete directory based AMD Opteron causes low locality
+  leading to inefficient intra-socket synchronization.
+  \item Under high contention, single-sockets prevent performance collapse,
+  whereas in the lower contention cases these platforms scale well.
+  \item multi-sockets exhibit a significantly lower throughput for high contention,
+  multi-sockets provide limited scalability even on the low contention scenarios.
+  \item uniformity is expected to scale better.
+  \item atomic operations (CAS) is more expensive than loads and stores (cache) on the same socket,
+  but loads and stores can be as expensive as atomic operations multi-sockets.
+  It showed that loads and stores \textbf{scale up worser than} atomic operations.
+  \item simple locks are powerful (test-and-set, ticket lock).
+  While complex locks are generally the best under extreme contention,
+  simple locks perform better under low contention.
+  An efficient implementation of a ticket lock is the best performing synchronization scheme
+  in most low contention workloads and some higher contention workloads.
+  \item use of message passing for optimizing certain \textbf{highly contended} parts of a system.
+\end{compactitem}
+\subsection{MESI}
+MESI supports the following states for a cache line:
+\begin{compactitem}
+  \item modified: the data are stale in the memory
+  and no other cache has a copy of this line;
+  \item exclusive: the data are up-to-date in the memory
+  and no other cache has a copy of this line;
+  \item shared: the data are up-to-date in the memory
+  and other caches might have copies of the line;
+  \item invalid: the data are invalid;
+  \item forward: shared cache line (in L3 cache) designated to respond to any requrests,
+  which avoids redundant data transfers from other cores or memory;
+  \item owned: shared modified state which allows a dirty cache line to be shared.
+\end{compactitem}
+\subsection{Atomics}
+Some insights proposed in Schweizer~\cite{DBLP:conf/IEEEpact/SchweizerBH15}:
+\begin{compactitem}
+  \item the performance of atomics is similar on multi-socket systems
+  due to the overheads from socket-to-socket hops (dominant costs).
+  \item unsuccessful CASes invalidate the copies of fetched cache lines
+  entailing significant overheads.
+  Yet, such operations do not modify the fetched cache line,
+  making the invalidations unnecessary.
+  \item atomic operations cause the write buffers to be drained.
+  That means that every atomic is affecting the cache directly
+  without being merged or buffered.
+  \item atomics do not allow for ILP whatsoever.
+  \item lower bandwidth in a contended execution of atomic operations
+  than in a non-contended case.
+\end{compactitem}
+\subsection{Locks}
+等待获取锁的方式有 ``被动'' 和 ``主动'' 两种.
+被动模式指的是互相竞争的线程不再关心锁是否已经被释放,
+而是让自身进入阻塞状态,
+等待某种调度机制在锁释放时唤醒其中某个线程,
+如互斥锁 (Mutex) 与信号量 (Semaphore);
+主动模式通常使用自旋的方式实现,
+线程进入某种循环主动判断锁的状态并尝试获得锁,
+一旦某个线程获得了锁会立即退出循环,
+如 Spin Lock, Queue Lock, Hierarchical Lock.
+尽管自旋浪费了计算资源, 但是在锁资源很快就可以被释放的前提下,
+自旋锁的开销要低于线程的阻塞和唤起导致的系统开销.
+\paragraph{TAS/TSL}
+test-and-set-lock 是一种原子操作, 利用 TSL 指令来可以实现自旋锁.
+当旧值为 0 时, 这程序可以得到锁.
+否则的话, 它会一直尝试将 1 写入存储器位置, 直到旧值为 0.
+\paragraph{CAS}
+compare-and-swap 是一种原子操作,
+通常会记录下某块内存中的旧值, 通过对旧值进行一系列的操作后得到新值,
+然后通过 CAS 操作将新值与旧值进行交换.
+如果这块内存的值在这期间内没被修改过, 则旧值会与内存中的数据相同,
+这时 CAS 操作将会成功执行, 使内存中的数据变为新值.
+如果内存中的值在这期间内被修改过, 则一般来说旧值会与内存中的数据不同,
+这时CAS操作将会失败, 新值将不会被写入内存.
+CAS 可以用于实现无锁数据结构, 常见的有无锁队列 (先入先出) 以及无锁堆 (先入后出).
+\paragraph{FAA/FAI}
+fetch-and-add/fetch-and-increment 对内存位置执行增加一个数量的原子操作.
+具体内容为: 令$x$变为$x+a$, 其中$x$是内存位置, $a$是值, 可用于实现互斥锁与信号量.
+\paragraph{Spin Lock}
+自旋锁是计算机科学用于多线程同步的一种锁, 线程反复检查锁变量是否可用.
+由于线程在这一过程中保持执行, 因此是一种忙等待.
+一旦获取了自旋锁, 线程会一直保持该锁, 直至显式释放自旋锁.
+
+Spin locks are generally considered to scale poorly
+because they involve high contention on a single cache line.
+\paragraph{Ticket Lock}
+Ticket Lock 排号自旋锁类似于自旋锁, 但每一个申请排队自旋锁的线程获得一个排队号 (ticket).
+至多一个线程拥有自旋锁, 当它释放锁时, 把自身的 ticket 加 1 作为下一个可获得锁的 ticket,
+持有该 ticket 的线程在自旋检查时就可发现已经获得了自旋锁.
+这种机制类似于一些提供社会服务的场所 (如银行):
+进门的顾客从排号机获取一个等待号, 然后不断检查当前可服务的号, 直至轮到其手持的号.
+
+Ticket Lock 虽然解决了公平性的问题, 但是多处理器系统上,
+每个进程/线程占用的处理器都在读写同一个变量 serviceNum,
+每次读写操作都必须在多个处理器缓存之间进行缓存同步
+这会导致繁重的系统总线和内存的流量, 大大降低系统整体的性能.
+\begin{lstlisting}
+ALWAYS_INLINE void ProportionalBackOffTicketSpinLock::Enter()
+{
+  const auto myTicketNo = NextTicketNo.fetch_add(1, std::memory_order_relaxed);
+ 
+  while (true)
+  {
+    const auto servingTicketNo = ServingTicketNo.load(std::memory_order_acquire);
+    if (servingTicketNo == myTicketNo)
+      break;
+ 
+    const size_t numBeforeMe = myTicketNo-servingTicketNo;
+    const size_t waitIters = BACKOFF_BASE*numBeforeMe;
+ 
+    for (size_t i=0; i<waitIters; i++)
+      CpuRelax();
+  }
+}
+\end{lstlisting}
+\paragraph{CLH Lock}
+CLH (Craig, Landin, and Hagersten lock) 是一个自旋锁, 能确保无饥饿性, 提供先来先服务的公平性.
+CLH 锁也是一种基于链表的可扩展, 高性能, 公平的自旋锁,
+申请线程只在本地变量上自旋, 它不断轮询前驱的状态, 如果发现前驱释放了锁就结束自旋.
+相比于 Ticket Lock, 申请线程只在本地变量上自旋,
+从而极大地减少了不必要的处理器缓存同步的次数, 降低了总线和内存的开销.
+\subsection{Lock-Free Data Structure}
+Data structures are typically faster when synchronized exclusively
+with compare-and-swap than any other technique,
+which guarantees that one slow thread does not affect the overall system performance.
+The lock-free use of compare-and-swap makes
+the design of these data structures extremely difficult~\cite{DBLP:conf/ppopp/Gramoli15}.
+\begin{lstlisting}
+class Node {
+  Node *next;
+  int data;
+}; 
+
+void push(int t) {
+  Node* node = new Node(t);
+
+  do {
+    node->next = head;
+  } while (!cas(&head, node, node->next));
+}
+
+bool pop(int& t) {
+  Node* current = head;
+
+  while(current) {
+    if(cas(&head, current->next, current)) {
+      t = current->data; // problem?
+      return true;
+    }
+
+    current = head;
+  }
+
+  return false;
+}
+\end{lstlisting}
+\subsection{Copy-on-Write Based Structures}
+Copy-on-write-like techniques (e.g. read-copy-update)
+provide impressively high performance for read-only workloads
+but very low performance for update workloads.
+Software transactional memory,
+which is known to be badly-suited for heavily contended applications,
+may even handle conflicts more effectively than this technique
+(when only use copy-on-write without any optimizations)~\cite{DBLP:conf/ppopp/Gramoli15}.
+\clearpage
+
+\section{DragonGraph}
+GPUs also face the drawbacks,
+e.g., control and memory divergence,
+load imbalance and global memory access overhead.
+
+\subsection{Basic Infrastructure}
+\begin{compactitem}
+  \item Enhanced/Redundant CSR.
+  \item vertex-centric.
+  \item GAS (sync).
+  \item push (locks) when few vertices discovered (early iterations).
+  \item pull (no locks) when many vertices discovered (late iterations).
+  \item no NUMA.
+  \item Verilog or Sdaccel.
+\end{compactitem}
+
+\subsection{Grpah Kernels or Grpah Benckmarks}
+\begin{compactitem}
+  \item SSSP.
+  \item CC.
+  \item best-first search.
+  \item uniform-cost search.
+  \item greedy-search.
+  \item A*.
+\end{compactitem}
+
+\subsection{Graph Representation}
+\begin{compactitem}
+  \item CSR + Interval + Shard (edge pointer in vertices array)~\cite{DBLP:conf/sbac-pad/ZhouP17}
+  \item degree-aware indices sorting and adjacency list compression~\cite{DBLP:conf/fpga/ZhangL18}
+  \item Bitmap for frontier vertices and visited vertices.
+  Bitmap compression: two level bitmap~\cite{DBLP:conf/fpga/ZhangL18},
+  bloom filter.
+\end{compactitem}
+
+\subsection{Arbitrator} % (fold)
+\label{sub:arbitrator}
+\subsubsection{Stall Scheme}
+EEAGAA~\cite{DBLP:conf/isca/OzdalYKAGBO16} 采用以顶点为中心计算模式,
+并采用行压缩 (CSR) 格式来表示图数据, 在执行图算法时, 遵循 GAS 模型, 并支持异步执行模式.
+其内部包括同步部件 (RAW and WAR Detector).
+\subsubsection{Reduce Scheme}
+AccuGraph~\cite{DBLP:conf/IEEEpact/Yao0L0H18}
+designed a parallel accumulator to remove the serialization in atomic protections
+for conflicting vertex updates through merging their results in parallel.
+\subsubsection{Sorting Scheme}
+Sort the edges by destination vertices, find minimal value easily in the sorting block,
+thus reducing the number of updates that have to be written to DRAM.
+\subsubsection{Data Forwarding Scheme}
+forward result of memory write stage to memory read stage,
+invalid memory read when encounting same destination.
+\subsubsection{Floating Barrier Scheme}
+\label{ssub:floating barrier scheme}
+Each processing element sends a barrier marker to
+all PEs when it finishes a superstep.
+The arbiter (Arbiter -> Apply Kernel -> Update Queue -> Scatter Kernel)
+at the receiving end needs to
+let pass only messages destined for the current superstep,
+and block messages for the next superstep until it \textbf{receives barrier markers from all PEs}.
+The arbiter will then withdraw all barrier markers for the current superstep simultaneously
+and signal the barrier to the apply component.
+
+The floating barrier is also used to detect termination:
+each PE tracks the last two messages it received.
+If both are barrier messages, no vertices were active on this PE in the last superstep.
+While this condition holds, the PE signals inactivity.
+If all PEs signal inactivity simultaneously,
+no messages at all were sent in the previous superstep,
+and the system is halted.
+\subsubsection{Lock Free and Coalesced Messages}
+分配一组消费者, 每个消费者负责一定区域的内存缓冲, 形成 lock-free 的顶点信息更新操作.
+
+每个节点第⼀步与同⾏的节点通信, 第⼆步与同列的节点通信, 这两步都实现了消息的聚合.
+第⼀步, 源节点会把发往同⼀个组的消息放在同⼀个发送缓冲中, 分批发给转发节点.
+转发节点收到聚合过的消息后, 进⾏⼀次再分类, 将数据放到组内的缓存区中,
+第⼆步发送是转发节点到⽬标节点, 消息同样是聚合过的.
+
+如果在 Frontier 中的点很多, 则采⽤位图来标记是否在 Frontier 中这⼀信息.
+反之, 如果在 Frontier 中的点很少, 这直接发送在 Frontier 中的点的队列.
+
+\subsection{Graph Reordering and Partitioning}
+对于 CSR, 将所有顶点按照度数从大到小排列, 并去除度数为 0 的顶点.
+
+对⼦区域边数排序, 先将边数最多的 $n$ 个⼦区域分给 $n$ 个节点.
+按照贪⼼策略将剩余的 $15 * n$ 个⼦区域合到 $n$ 个节点上.
+限制前 $k$ 个节点的边数总和不大于 $k \times m_{avg}$,
+依次将⼦区域映射到节点上, 得到⼦区域和节点的映射关系.
+
+⾼出度边, 其源顶点为⾼出度顶点, ⽬标顶点的度数不做限制;
+⾼⼊度边, 其源顶点为低低出度顶点, ⽬标顶点为⾼⼊度顶点;
+低度边, 即剩余的所有边, 其源顶点和⽬标顶点均为低度数.
+通过映射关系将⾼⼊度边和低度边发送到源节点, ⾼出度边发送到⽬标节点.
+高入度边和高出度边采取顶点镜像的方式减少远端通信量,
+将大量的 EdgeMsg 通信变为少量的 VtxMsg 通信, 再由镜像顶点向本地发送进一步消息.
+
+% subsection Arbitrator (end)
+
+\clearpage
+
+\section{FPGA Programming}
+\subsection{Testing and Debugging}
+SystemVerilog 是业界使用较广泛的验证语言,
+同时也衍生出了一系列专业的验证方法学 (如 UVM).
+因此在测试平台的编写上建议使用 SV,
+而非 Verilog 或 SystemC.
+
+Direct Programming Interface (DPI) 是一种非常简单的方式
+来连接 C/C++ 或者其他非 Verilog 编程语言.
+一旦声明或用 import 导入了一个 C 子程序,
+就可以像调用 SV 中的子程序调用该子程序.
+DPI 最大的意义在于可以轻松的使用其他成熟的模拟器 (如 DRAMSim2/GEM5)
+来极大的降低 verilog 仿真时间.
+例如, 如果使用 Xilinx MIG 产生的 ddr3 module 进行仿真, 10min 大概仿真 0.07ms;
+而使用 DRAMSim2 处理整个 trace 可能仅需几秒钟.
+
+\clearpage
+
+
+\bibliographystyle{unsrt}
+\bibliography{bibs/graph}
+\addcontentsline{toc}{section}{References}
+\newpage
+
+\end{document}
