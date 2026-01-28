@@ -8,8 +8,6 @@
 [![downloads](https://img.shields.io/visual-studio-marketplace/d/sabertazimi.latex-snippets?logo=visualstudiocode&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=sabertazimi.latex-snippets)
 [![rating](https://img.shields.io/visual-studio-marketplace/stars/sabertazimi.latex-snippets?logo=visualstudiocode&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=sabertazimi.latex-snippets)
 
-> Powerful LaTeX Snippets for CS Paper Writing
-
 This extension adds snippets for `LaTeX` language.
 Originally converted from the [ProAdd-ons/vscode-LaTeX-support](https://github.com/ProAdd-ons/vscode-LaTeX-support).
 
