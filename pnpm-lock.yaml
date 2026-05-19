@@ -12,8 +12,8 @@ importers:
         specifier: ^3.9.1
         version: 3.9.1
       commit-and-tag-version:
-        specifier: ^12.7.1
-        version: 12.7.1
+        specifier: ^12.7.3
+        version: 12.7.3
 
 packages:
 
@@ -397,8 +397,8 @@ packages:
     resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
     engines: {node: '>=18'}
 
-  commit-and-tag-version@12.7.1:
-    resolution: {integrity: sha512-18+iV9VMPWQ5rryn1nKprvkwqFMx1eOcEwIprjgyGm8Blhsw7WnsFXgyYLIlBF4uG2fcbbps8P7fBZARvaA0VA==}
+  commit-and-tag-version@12.7.3:
+    resolution: {integrity: sha512-rbauuCDU98yEHMy/LrNNu8HLTuGv7C2kN/3GXC59L18aJGii0eiryCESb1SEHXNFem2/2ngWG/Pq6qaCqw3aCw==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -1590,6 +1590,7 @@ packages:
 
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
   validate-npm-package-license@3.0.4:
@@ -2165,7 +2166,7 @@ snapshots:
 
   commander@12.1.0: {}
 
-  commit-and-tag-version@12.7.1:
+  commit-and-tag-version@12.7.3:
     dependencies:
       chalk: 2.4.2
       conventional-changelog: 4.0.0
