@@ -1,6 +1,19 @@
-.vscode/**
-.vscode-test/**
-node_modules/
+# VS Code
+.vscode/
+.vscode-test/
+
+# Source control
 .gitignore
-.travis.yml
-vsc-extension-quickstart.md
+
+# CI/CD
+.github/
+
+# Dependencies
+node_modules/
+
+# Package manager
+pnpm-lock.yaml
+pnpm-workspace.yaml
+
+# Boilerplate examples
+boilerplate/
