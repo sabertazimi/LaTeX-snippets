@@ -36,8 +36,8 @@ jobs:
       - name: Publish to VSCode marketplace
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          npx @vscode/vsce package
-          npx @vscode/vsce publish -p ${{ secrets.VSCE_PAT }}
+          pnpx @vscode/vsce package
+          pnpx @vscode/vsce publish -p ${{ secrets.VSCE_PAT }}
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
 
