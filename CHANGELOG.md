@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.2](https://github.com/sabertazimi/LaTeX-snippets/compare/v1.1.1...v1.1.2) (2026-05-29)
+
+
+### Bug Fixes
+
+* **vscodeignore:** update ignored files ([89a8cde](https://github.com/sabertazimi/LaTeX-snippets/commit/89a8cdee1e494c1173e7af13d1c35b5c0dd6be79))
+
 ## [1.1.1](https://github.com/sabertazimi/LaTeX-snippets/compare/v1.1.0...v1.1.1) (2026-05-29)
 
 ## [1.1.0](https://github.com/sabertazimi/LaTeX-snippets/compare/v1.0.7...v1.1.0) (2021-09-03)

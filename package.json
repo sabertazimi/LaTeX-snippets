@@ -2,7 +2,7 @@
   "publisher": "sabertazimi",
   "name": "latex-snippets",
   "displayName": "LaTeX Snippets",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "packageManager": "pnpm@11.4.0",
   "description": "Powerful LaTeX Snippets for CS Paper Writing",
   "license": "MIT",
