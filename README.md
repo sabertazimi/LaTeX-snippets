@@ -3,10 +3,7 @@
 [![Author](https://img.shields.io/badge/author-sabertaz-lightgrey?style=for-the-badge)](https://github.com/sabertazimi)
 [![LICENSE](https://img.shields.io/github/license/sabertazimi/LaTex-snippets?style=for-the-badge)](https://raw.githubusercontent.com/sabertazimi/LaTex-snippets/main/LICENSE)
 [![CI](https://img.shields.io/github/actions/workflow/status/sabertazimi/LaTex-snippets/ci.yml?branch=main&logo=github&style=for-the-badge)](https://github.com/sabertazimi/LaTex-snippets/actions/workflows/ci.yml)
-
-[![version](https://img.shields.io/visual-studio-marketplace/v/sabertazimi.latex-snippets?logo=visualstudiocode&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=sabertazimi.latex-snippets)
-[![downloads](https://img.shields.io/visual-studio-marketplace/d/sabertazimi.latex-snippets?logo=visualstudiocode&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=sabertazimi.latex-snippets)
-[![rating](https://img.shields.io/visual-studio-marketplace/stars/sabertazimi.latex-snippets?logo=visualstudiocode&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=sabertazimi.latex-snippets)
+[![VSCode](https://img.shields.io/badge/-Marketplace-2F80ED?style=for-the-badge&logo=vscodium&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=sabertazimi.latex-snippets)
 
 This extension adds snippets for `LaTeX` language.
 Originally converted from the [ProAdd-ons/vscode-LaTeX-support](https://github.com/ProAdd-ons/vscode-LaTeX-support).
