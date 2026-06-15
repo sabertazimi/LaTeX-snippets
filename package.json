@@ -3,7 +3,7 @@
   "name": "latex-snippets",
   "displayName": "LaTeX Snippets",
   "version": "1.1.2",
-  "packageManager": "pnpm@11.4.0",
+  "packageManager": "pnpm@11.7.0",
   "description": "Powerful LaTeX Snippets for CS Paper Writing",
   "license": "MIT",
   "homepage": "https://github.com/sabertazimi/LaTeX-snippets",
